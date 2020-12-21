@@ -14,17 +14,9 @@
 
 use super::super::OffHash;
 use crate::{
-    hash::{
-        Blake2x256,
-        CryptoHash,
-        HashOutput,
-    },
-    topics::{
-        Topics,
-        TopicsBuilderBackend,
-    },
-    Clear,
-    Environment,
+    hash::{Blake2x256, CryptoHash, HashOutput},
+    topics::{Topics, TopicsBuilderBackend},
+    Clear, Environment,
 };
 
 #[derive(Default)]

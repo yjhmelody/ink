@@ -34,25 +34,16 @@ mod lazy_imap;
 
 use self::{
     cache_cell::CacheCell,
-    entry::{
-        EntryState,
-        StorageEntry,
-    },
+    entry::{EntryState, StorageEntry},
 };
 #[doc(inline)]
 pub use self::{
-    lazy_array::{
-        LazyArray,
-        LazyArrayLength,
-    },
+    lazy_array::{LazyArray, LazyArrayLength},
     lazy_cell::LazyCell,
     lazy_hmap::LazyHashMap,
     lazy_imap::LazyIndexMap,
 };
-use crate::traits::{
-    KeyPtr,
-    SpreadLayout,
-};
+use crate::traits::{KeyPtr, SpreadLayout};
 use ink_primitives::Key;
 
 /// A lazy storage entity.

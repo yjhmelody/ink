@@ -17,10 +17,7 @@ use crate::Error;
 use core::{
     any::TypeId,
     cmp::Ordering,
-    hash::{
-        Hash,
-        Hasher,
-    },
+    hash::{Hash, Hasher},
     marker::PhantomData,
 };
 use derive_more::From;
@@ -148,7 +145,7 @@ impl<M> TypedEncoded<M> {
             return Err(TypedEncodedError::AlreadyInitialized {
                 initialized_id: id,
                 new_id: core::any::TypeId::of::<T>(),
-            })
+            });
         }
         value.encode_to(&mut self.encoded);
         self.type_id = Some(core::any::TypeId::of::<T>());
@@ -162,7 +159,7 @@ impl<M> TypedEncoded<M> {
     /// If the instance is still uninitialized.
     pub fn encoded_bytes(&self) -> Result<&[u8]> {
         if self.type_id.is_none() {
-            return Err(TypedEncodedError::StillUninitialized)
+            return Err(TypedEncodedError::StillUninitialized);
         }
         Ok(&self.encoded[..])
     }
@@ -174,7 +171,7 @@ impl<M> TypedEncoded<M> {
     /// If the instance is still uninitialized.
     pub fn encoded_bytes_mut(&mut self) -> Result<&mut [u8]> {
         if self.type_id.is_none() {
-            return Err(TypedEncodedError::StillUninitialized)
+            return Err(TypedEncodedError::StillUninitialized);
         }
         Ok(&mut self.encoded[..])
     }
@@ -199,7 +196,7 @@ impl<M> TypedEncoded<M> {
             return Err(TypedEncodedError::DifferentTypes {
                 lhs: id_lhs,
                 rhs: id_rhs,
-            })
+            });
         }
         Ok(())
     }
@@ -215,7 +212,7 @@ impl<M> TypedEncoded<M> {
             return Err(TypedEncodedError::DifferentTypes {
                 lhs: id_self,
                 rhs: id_enforced,
-            })
+            });
         }
         Ok(())
     }

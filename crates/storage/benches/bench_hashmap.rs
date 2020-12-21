@@ -12,19 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use criterion::{
-    black_box,
-    criterion_group,
-    criterion_main,
-    BatchSize,
-    Criterion,
-};
+use criterion::{black_box, criterion_group, criterion_main, BatchSize, Criterion};
 
 use ink_primitives::Key;
-use ink_storage::traits::{
-    KeyPtr,
-    SpreadLayout,
-};
+use ink_storage::traits::{KeyPtr, SpreadLayout};
 
 #[cfg(test)]
 macro_rules! gen_tests_for_backend {
@@ -237,10 +228,7 @@ macro_rules! gen_tests_for_backend {
 mod lazyhmap_backend {
     use super::*;
     use ink_env::hash::Blake2x256;
-    use ink_storage::lazy::lazy_hmap::{
-        Entry,
-        LazyHashMap,
-    };
+    use ink_storage::lazy::lazy_hmap::{Entry, LazyHashMap};
 
     gen_tests_for_backend!(LazyHashMap<i32, i32, Blake2x256>);
 
@@ -267,10 +255,7 @@ mod lazyhmap_backend {
 
 mod hashmap_backend {
     use super::*;
-    use ink_storage::collections::{
-        hashmap::Entry,
-        HashMap as StorageHashMap,
-    };
+    use ink_storage::collections::{hashmap::Entry, HashMap as StorageHashMap};
 
     gen_tests_for_backend!(StorageHashMap<i32, i32>);
 

@@ -14,10 +14,7 @@
 
 use super::Stash as StorageStash;
 use crate::{
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
     Lazy,
 };
 use ink_primitives::Key;

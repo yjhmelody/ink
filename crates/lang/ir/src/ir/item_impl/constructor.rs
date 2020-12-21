@@ -12,19 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    ensure_callable_invariants,
-    Callable,
-    CallableKind,
-    InputsIter,
-    Visibility,
-};
+use super::{ensure_callable_invariants, Callable, CallableKind, InputsIter, Visibility};
 use crate::ir;
 use core::convert::TryFrom;
-use proc_macro2::{
-    Ident,
-    Span,
-};
+use proc_macro2::{Ident, Span};
 use syn::spanned::Spanned as _;
 
 /// An ink! constructor definition.
@@ -113,7 +104,7 @@ impl Constructor {
                     return Err(format_err_spanned!(
                         return_type,
                         "ink! constructors must return Self",
-                    ))
+                    ));
                 }
             }
         }

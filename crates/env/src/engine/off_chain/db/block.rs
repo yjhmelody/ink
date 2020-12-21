@@ -13,13 +13,8 @@
 // limitations under the License.
 
 use super::{
-    super::{
-        Result,
-        TypedEncoded,
-    },
-    OffBlockNumber,
-    OffHash,
-    OffTimestamp,
+    super::{Result, TypedEncoded},
+    OffBlockNumber, OffHash, OffTimestamp,
 };
 use crate::Environment;
 

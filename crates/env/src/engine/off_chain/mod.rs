@@ -29,31 +29,16 @@ mod tests;
 use self::chain_extension::ChainExtensionHandler;
 pub use self::{
     call_data::CallData,
-    db::{
-        AccountError,
-        EmittedEvent,
-        PastPrints,
-    },
+    db::{AccountError, EmittedEvent, PastPrints},
     typed_encoded::TypedEncodedError,
 };
 use self::{
     db::{
-        Account,
-        AccountsDb,
-        Block,
-        ChainSpec,
-        Console,
-        EmittedEventsRecorder,
+        Account, AccountsDb, Block, ChainSpec, Console, EmittedEventsRecorder,
         ExecContext,
     },
     typed_encoded::TypedEncoded,
-    types::{
-        OffAccountId,
-        OffBalance,
-        OffBlockNumber,
-        OffHash,
-        OffTimestamp,
-    },
+    types::{OffAccountId, OffBalance, OffBlockNumber, OffHash, OffTimestamp},
 };
 use super::OnInstance;
 use crate::Environment;
@@ -163,10 +148,7 @@ impl EnvInstance {
         <T as Environment>::AccountId: From<[u8; 32]>,
     {
         use core::ops::Div as _;
-        use num_traits::{
-            Bounded as _,
-            Zero as _,
-        };
+        use num_traits::{Bounded as _, Zero as _};
         let default_accounts = test_api::default_accounts::<T>()?;
         // Alice has half of the maximum possible amount.
         self.accounts.add_user_account::<T>(

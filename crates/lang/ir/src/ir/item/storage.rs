@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    ir,
-    ir::utils,
-};
+use crate::{ir, ir::utils};
 use core::convert::TryFrom;
 use proc_macro2::Ident;
 use syn::spanned::Spanned as _;
@@ -66,7 +63,7 @@ impl Storage {
         item_struct: &syn::ItemStruct,
     ) -> Result<bool, syn::Error> {
         if !ir::contains_ink_attributes(&item_struct.attrs) {
-            return Ok(false)
+            return Ok(false);
         }
         // At this point we know that there must be at least one ink!
         // attribute. This can be either the ink! storage struct,
@@ -92,7 +89,7 @@ impl TryFrom<syn::ItemStruct> for Storage {
             return Err(format_err_spanned!(
                 item_struct.generics.params,
                 "generic ink! storage structs are not supported",
-            ))
+            ));
         }
         utils::ensure_pub_visibility("storage structs", struct_span, &item_struct.vis)?;
         Ok(Self {

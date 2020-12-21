@@ -12,19 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    ensure_callable_invariants,
-    Callable,
-    CallableKind,
-    InputsIter,
-    Visibility,
-};
+use super::{ensure_callable_invariants, Callable, CallableKind, InputsIter, Visibility};
 use crate::ir;
 use core::convert::TryFrom;
-use proc_macro2::{
-    Ident,
-    Span,
-};
+use proc_macro2::{Ident, Span};
 use syn::spanned::Spanned as _;
 
 /// The receiver of an ink! message.
@@ -139,7 +130,7 @@ impl Message {
             Some(syn::FnArg::Typed(pat_typed)) => return Err(bail(pat_typed.span())),
             Some(syn::FnArg::Receiver(receiver)) => {
                 if receiver.reference.is_none() {
-                    return Err(bail(receiver.span()))
+                    return Err(bail(receiver.span()));
                 }
             }
         }
@@ -162,7 +153,7 @@ impl Message {
                         return Err(format_err!(
                             ret_type,
                             "ink! messages must not return `Self`"
-                        ))
+                        ));
                     }
                 }
             }

@@ -12,18 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    Iter,
-    SmallVec,
-};
-use crate::{
-    lazy::LazyArrayLength,
-    traits::PackedLayout,
-};
-use core::iter::{
-    Extend,
-    FromIterator,
-};
+use super::{Iter, SmallVec};
+use crate::{lazy::LazyArrayLength, traits::PackedLayout};
+use core::iter::{Extend, FromIterator};
 
 impl<T, N> Drop for SmallVec<T, N>
 where
@@ -125,7 +116,7 @@ where
 {
     fn eq(&self, other: &Self) -> bool {
         if self.len() != other.len() {
-            return false
+            return false;
         }
         self.iter().zip(other.iter()).all(|(lhs, rhs)| lhs == rhs)
     }

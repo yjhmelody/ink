@@ -13,13 +13,8 @@
 // limitations under the License.
 
 use super::{
-    super::{
-        CallData,
-        Result,
-        TypedEncoded,
-    },
-    OffAccountId,
-    OffBalance,
+    super::{CallData, Result, TypedEncoded},
+    OffAccountId, OffBalance,
 };
 use crate::Environment;
 use ink_prelude::vec::Vec;

@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    super::Result,
-    OffBalance,
-    OffTimestamp,
-};
+use super::{super::Result, OffBalance, OffTimestamp};
 use crate::Environment;
 
 /// The chain specification.

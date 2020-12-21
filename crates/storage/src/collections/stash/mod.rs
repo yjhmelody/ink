@@ -22,15 +22,8 @@ mod storage;
 mod tests;
 
 use self::iter::Entries;
-pub use self::iter::{
-    Iter,
-    IterMut,
-};
-use crate::{
-    lazy::LazyIndexMap,
-    traits::PackedLayout,
-    Pack,
-};
+pub use self::iter::{Iter, IterMut};
+use crate::{lazy::LazyIndexMap, traits::PackedLayout, Pack};
 use ink_primitives::Key;
 
 /// An index into the stash.
@@ -101,7 +94,7 @@ impl<T> Entry<T> {
     /// Returns `true` if the entry is occupied.
     pub fn is_occupied(&self) -> bool {
         if let Entry::Occupied(_) = self {
-            return true
+            return true;
         }
         false
     }
@@ -229,13 +222,11 @@ where
     pub fn get(&self, at: Index) -> Option<&T> {
         if at >= self.len_entries() {
             // Bail out early if the index is out of bounds.
-            return None
+            return None;
         }
-        self.entries.get(at).and_then(|entry| {
-            match entry {
-                Entry::Occupied(val) => Some(val),
-                Entry::Vacant { .. } => None,
-            }
+        self.entries.get(at).and_then(|entry| match entry {
+            Entry::Occupied(val) => Some(val),
+            Entry::Vacant { .. } => None,
         })
     }
 
@@ -243,13 +234,11 @@ where
     pub fn get_mut(&mut self, at: Index) -> Option<&mut T> {
         if at >= self.len_entries() {
             // Bail out early if the index is out of bounds.
-            return None
+            return None;
         }
-        self.entries.get_mut(at).and_then(|entry| {
-            match entry {
-                Entry::Occupied(val) => Some(val),
-                Entry::Vacant { .. } => None,
-            }
+        self.entries.get_mut(at).and_then(|entry| match entry {
+            Entry::Occupied(val) => Some(val),
+            Entry::Vacant { .. } => None,
         })
     }
 }
@@ -271,7 +260,7 @@ where
         if self.entries.key().is_none() {
             // We won't clear any storage if we are in lazy state since there
             // probably has not been any state written to storage, yet.
-            return
+            return;
         }
         for index in 0..self.len_entries() {
             // It might seem wasteful to clear all entries instead of just
@@ -302,7 +291,7 @@ where
             // There is no other vacant entry left in the storage stash so
             // there is nothing to update. Bail out early.
             self.header.last_vacant = self.header.len;
-            return
+            return;
         }
         if prev_vacant == next_vacant {
             // There is only one other vacant entry left.
@@ -456,7 +445,7 @@ where
         // - There are no vacant entries before.
         if at >= self.len_entries() {
             // Early return since `at` index is out of bounds.
-            return None
+            return None;
         }
         // Precompute prev and next vacant entries as we might need them later.
         // Due to borrow checker constraints we cannot have this at a later stage.
@@ -464,7 +453,7 @@ where
         let entry_mut = self.entries.get_mut(at).expect("index is out of bounds");
         if entry_mut.is_vacant() {
             // Early return if the taken entry is already vacant.
-            return None
+            return None;
         }
         // At this point we know that the entry is occupied with a value.
         let new_vacant_entry = Entry::Vacant(VacantEntry { prev, next });
@@ -508,7 +497,7 @@ where
         // the stored `T` is especially costly to load from contract storage.
         if at >= self.len_entries() {
             // Early return since `at` index is out of bounds.
-            return None
+            return None;
         }
         // Precompute prev and next vacant entries as we might need them later.
         // Due to borrow checker constraints we cannot have this at a later stage.
@@ -556,7 +545,7 @@ where
         {
             if !self.has_vacant_entries() {
                 // Bail out as soon as there are no more vacant entries left.
-                return freed_cells
+                return freed_cells;
             }
             // In any case we are going to free yet another storage cell.
             freed_cells += 1;

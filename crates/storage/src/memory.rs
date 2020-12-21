@@ -12,26 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::traits::{
-    KeyPtr,
-    SpreadLayout,
-};
+use crate::traits::{KeyPtr, SpreadLayout};
 use core::{
-    convert::{
-        self,
-        AsRef,
-    },
+    convert::{self, AsRef},
     fmt,
     fmt::Display,
-    ops::{
-        Deref,
-        DerefMut,
-    },
+    ops::{Deref, DerefMut},
 };
-use ink_prelude::borrow::{
-    Borrow,
-    BorrowMut,
-};
+use ink_prelude::borrow::{Borrow, BorrowMut};
 
 /// An instance that is solely stored within the contract's memory.
 ///
@@ -53,11 +41,7 @@ pub struct Memory<T> {
 #[cfg(feature = "std")]
 const _: () = {
     use crate::traits::StorageLayout;
-    use ink_metadata::layout::{
-        CellLayout,
-        Layout,
-        LayoutKey,
-    };
+    use ink_metadata::layout::{CellLayout, Layout, LayoutKey};
 
     impl<T> StorageLayout for Memory<T> {
         fn layout(key_ptr: &mut KeyPtr) -> Layout {
@@ -176,25 +160,13 @@ where
 #[cfg(test)]
 mod tests {
     use super::Memory;
-    use crate::traits::{
-        KeyPtr,
-        SpreadLayout,
-    };
+    use crate::traits::{KeyPtr, SpreadLayout};
     use core::{
-        convert::{
-            AsMut,
-            AsRef,
-        },
-        ops::{
-            Deref,
-            DerefMut,
-        },
+        convert::{AsMut, AsRef},
+        ops::{Deref, DerefMut},
     };
     use ink_env::test::DefaultAccounts;
-    use ink_prelude::borrow::{
-        Borrow,
-        BorrowMut,
-    };
+    use ink_prelude::borrow::{Borrow, BorrowMut};
     use ink_primitives::Key;
 
     type ComplexTuple = (u8, [i32; 4], (bool, i32));

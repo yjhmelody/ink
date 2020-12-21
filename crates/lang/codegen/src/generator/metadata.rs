@@ -16,10 +16,7 @@ use crate::GenerateCode;
 use derive_more::From;
 use ir::Callable as _;
 use proc_macro2::TokenStream as TokenStream2;
-use quote::{
-    quote,
-    quote_spanned,
-};
+use quote::{quote, quote_spanned};
 use syn::spanned::Spanned as _;
 
 /// Generates code to generate the metadata of the contract.
@@ -93,18 +90,14 @@ impl Metadata<'_> {
     ) -> impl Iterator<Item = String> + '_ {
         attributes
             .iter()
-            .filter_map(|attribute| {
-                match attribute.parse_meta() {
-                    Ok(syn::Meta::NameValue(name_value)) => Some(name_value),
-                    Ok(_) | Err(_) => None,
-                }
+            .filter_map(|attribute| match attribute.parse_meta() {
+                Ok(syn::Meta::NameValue(name_value)) => Some(name_value),
+                Ok(_) | Err(_) => None,
             })
             .filter(|name_value| name_value.path.is_ident("doc"))
-            .filter_map(|name_value| {
-                match name_value.lit {
-                    syn::Lit::Str(lit_str) => Some(lit_str.value()),
-                    _ => None,
-                }
+            .filter_map(|name_value| match name_value.lit {
+                syn::Lit::Str(lit_str) => Some(lit_str.value()),
+                _ => None,
             })
     }
 
@@ -179,11 +172,11 @@ impl Metadata<'_> {
         }
         if let syn::Type::Path(type_path) = ty {
             if type_path.qself.is_some() {
-                return without_display_name(ty)
+                return without_display_name(ty);
             }
             let path = &type_path.path;
             if path.segments.is_empty() {
-                return without_display_name(ty)
+                return without_display_name(ty);
             }
             let segs = path
                 .segments

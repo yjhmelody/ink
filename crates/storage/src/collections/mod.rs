@@ -28,13 +28,8 @@ pub mod vec;
 
 #[doc(inline)]
 pub use self::{
-    binary_heap::BinaryHeap,
-    bitstash::BitStash,
-    bitvec::Bitvec,
-    hashmap::HashMap,
-    smallvec::SmallVec,
-    stash::Stash,
-    vec::Vec,
+    binary_heap::BinaryHeap, bitstash::BitStash, bitvec::Bitvec, hashmap::HashMap,
+    smallvec::SmallVec, stash::Stash, vec::Vec,
 };
 
 /// Extends the lifetime 'a to the outliving lifetime 'b for the given reference.

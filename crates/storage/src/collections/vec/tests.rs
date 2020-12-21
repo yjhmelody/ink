@@ -15,10 +15,7 @@
 use super::Vec as StorageVec;
 use crate::{
     collections::vec::IndexOutOfBounds,
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
     Lazy,
 };
 use ink_primitives::Key;

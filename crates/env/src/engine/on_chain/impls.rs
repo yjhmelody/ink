@@ -12,37 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    ext,
-    EnvInstance,
-    Error as ExtError,
-    ScopedBuffer,
-};
+use super::{ext, EnvInstance, Error as ExtError, ScopedBuffer};
 use crate::{
-    call::{
-        utils::ReturnType,
-        CallParams,
-        CreateParams,
-    },
-    hash::{
-        Blake2x128,
-        Blake2x256,
-        CryptoHash,
-        HashOutput,
-        Keccak256,
-        Sha2x256,
-    },
-    topics::{
-        Topics,
-        TopicsBuilderBackend,
-    },
-    Clear,
-    EnvBackend,
-    Environment,
-    Error,
-    Result,
-    ReturnFlags,
-    TypedEnvBackend,
+    call::{utils::ReturnType, CallParams, CreateParams},
+    hash::{Blake2x128, Blake2x256, CryptoHash, HashOutput, Keccak256, Sha2x256},
+    topics::{Topics, TopicsBuilderBackend},
+    Clear, EnvBackend, Environment, Error, Result, ReturnFlags, TypedEnvBackend,
 };
 use ink_primitives::Key;
 

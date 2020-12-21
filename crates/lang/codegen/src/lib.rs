@@ -15,10 +15,7 @@
 mod generator;
 mod traits;
 
-use self::traits::{
-    GenerateCode,
-    GenerateCodeUsing,
-};
+use self::traits::{GenerateCode, GenerateCodeUsing};
 
 use proc_macro2::TokenStream as TokenStream2;
 

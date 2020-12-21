@@ -12,20 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    generator,
-    GenerateCode,
-    GenerateCodeUsing as _,
-};
+use crate::{generator, GenerateCode, GenerateCodeUsing as _};
 use derive_more::From;
-use proc_macro2::{
-    Span,
-    TokenStream as TokenStream2,
-};
-use quote::{
-    quote,
-    quote_spanned,
-};
+use proc_macro2::{Span, TokenStream as TokenStream2};
+use quote::{quote, quote_spanned};
 use syn::spanned::Spanned as _;
 
 /// Generates code for the ink! event structs of the contract.
@@ -44,7 +34,7 @@ impl GenerateCode for Events<'_> {
     fn generate_code(&self) -> TokenStream2 {
         if self.contract.module().events().next().is_none() {
             // Generate no code in case there are no event definitions.
-            return TokenStream2::new()
+            return TokenStream2::new();
         }
         let emit_event_trait_impl = self.generate_emit_event_trait_impl();
         let event_base = self.generate_event_base();

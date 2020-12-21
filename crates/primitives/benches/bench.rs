@@ -12,16 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use criterion::{
-    black_box,
-    criterion_group,
-    criterion_main,
-    Criterion,
-};
-use ink_primitives::{
-    Key,
-    KeyPtr,
-};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use ink_primitives::{Key, KeyPtr};
 
 criterion_group!(
     bench_key,

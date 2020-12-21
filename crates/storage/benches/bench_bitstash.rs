@@ -12,21 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use criterion::{
-    black_box,
-    criterion_group,
-    criterion_main,
-    BatchSize,
-    Criterion,
-};
+use criterion::{black_box, criterion_group, criterion_main, BatchSize, Criterion};
 
 use ink_primitives::Key;
 use ink_storage::{
     collections::BitStash,
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
 };
 
 const BENCH_ALLOCATIONS: u32 = 100_000;

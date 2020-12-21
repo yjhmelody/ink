@@ -182,12 +182,7 @@ pub struct ReturnCode(u32);
 type Result = core::result::Result<(), Error>;
 
 mod sys {
-    use super::{
-        Key,
-        Ptr32,
-        Ptr32Mut,
-        ReturnCode,
-    };
+    use super::{Key, Ptr32, Ptr32Mut, ReturnCode};
 
     #[link(wasm_import_module = "seal0")]
     extern "C" {

@@ -13,10 +13,7 @@
 // limitations under the License.
 
 use super::HashMap as StorageHashMap;
-use crate::traits::{
-    KeyPtr,
-    SpreadLayout,
-};
+use crate::traits::{KeyPtr, SpreadLayout};
 use ink_primitives::Key;
 use itertools::Itertools;
 

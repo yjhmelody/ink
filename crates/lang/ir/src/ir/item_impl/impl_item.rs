@@ -12,15 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    Constructor,
-    Message,
-};
-use crate::{
-    error::ExtError as _,
-    ir,
-    ir::attrs::Attrs as _,
-};
+use super::{Constructor, Message};
+use crate::{error::ExtError as _, ir, ir::attrs::Attrs as _};
 use core::convert::TryFrom;
 use syn::spanned::Spanned as _;
 
@@ -64,7 +57,7 @@ impl TryFrom<syn::ImplItem> for ImplItem {
         match impl_item {
             syn::ImplItem::Method(method_item) => {
                 if !ir::contains_ink_attributes(&method_item.attrs) {
-                    return Ok(Self::Other(method_item.into()))
+                    return Ok(Self::Other(method_item.into()));
                 }
                 let attr = ir::first_ink_attribute(&method_item.attrs)?
                     .expect("missing expected ink! attribute for struct");
@@ -99,7 +92,7 @@ impl TryFrom<syn::ImplItem> for ImplItem {
                     return Err(ink_attrs[1..]
                         .iter()
                         .map(into_err)
-                        .fold(into_err(&ink_attrs[0]), |fst, snd| fst.into_combine(snd)))
+                        .fold(into_err(&ink_attrs[0]), |fst, snd| fst.into_combine(snd)));
                 }
                 Ok(Self::Other(other_item))
             }

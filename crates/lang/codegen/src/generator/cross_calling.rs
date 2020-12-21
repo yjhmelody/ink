@@ -17,15 +17,8 @@ use derive_more::From;
 use heck::CamelCase as _;
 use ir::Callable;
 use itertools::Itertools as _;
-use proc_macro2::{
-    Ident,
-    TokenStream as TokenStream2,
-};
-use quote::{
-    format_ident,
-    quote,
-    quote_spanned,
-};
+use proc_macro2::{Ident, TokenStream as TokenStream2};
+use quote::{format_ident, quote, quote_spanned};
 use syn::spanned::Spanned as _;
 
 /// Generates `#[cfg(..)]` code to guard against compilation under `ink-as-dependency`.
@@ -37,7 +30,7 @@ pub struct CrossCallingConflictCfg<'a> {
 impl GenerateCode for CrossCallingConflictCfg<'_> {
     fn generate_code(&self) -> TokenStream2 {
         if self.contract.config().is_compile_as_dependency_enabled() {
-            return quote! { #[cfg(feature = "__ink_DO_NOT_COMPILE")] }
+            return quote! { #[cfg(feature = "__ink_DO_NOT_COMPILE")] };
         }
         quote! { #[cfg(not(feature = "ink-as-dependency"))] }
     }
@@ -69,7 +62,7 @@ impl CrossCalling<'_> {
     /// is compiled as dependency.
     fn generate_cfg(&self) -> Option<TokenStream2> {
         if self.contract.config().is_compile_as_dependency_enabled() {
-            return None
+            return None;
         }
         Some(quote! {
             #[cfg(feature = "ink-as-dependency")]
@@ -482,16 +475,16 @@ impl CrossCalling<'_> {
     /// The `mutable` parameter indicates whether only read-only (`false`) or
     /// write-only (`true`) messages and constructors are to be considered.
     fn generate_call_forwarder_impl_blocks(&self, mutable: bool) -> TokenStream2 {
-        let impl_blocks = self.contract.module().impls().map(|item_impl| {
-            match item_impl.trait_path() {
-                Some(_) => {
-                    self.generate_call_forwarder_trait_impl_block(mutable, item_impl)
+        let impl_blocks =
+            self.contract.module().impls().map(|item_impl| {
+                match item_impl.trait_path() {
+                    Some(_) => {
+                        self.generate_call_forwarder_trait_impl_block(mutable, item_impl)
+                    }
+                    None => self
+                        .generate_call_forwarder_inherent_impl_block(mutable, item_impl),
                 }
-                None => {
-                    self.generate_call_forwarder_inherent_impl_block(mutable, item_impl)
-                }
-            }
-        });
+            });
         quote! { #( #impl_blocks )* }
     }
 
@@ -806,12 +799,13 @@ impl CrossCalling<'_> {
     }
 
     fn generate_impl_blocks(&self) -> TokenStream2 {
-        let impl_blocks = self.contract.module().impls().map(|impl_block| {
-            match impl_block.trait_path() {
-                Some(_) => self.generate_trait_impl_block(impl_block),
-                None => self.generate_inherent_impl_block(impl_block),
-            }
-        });
+        let impl_blocks =
+            self.contract.module().impls().map(|impl_block| {
+                match impl_block.trait_path() {
+                    Some(_) => self.generate_trait_impl_block(impl_block),
+                    None => self.generate_inherent_impl_block(impl_block),
+                }
+            });
         quote! {
             #( #impl_blocks )*
         }

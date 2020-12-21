@@ -21,10 +21,7 @@ mod delegator {
     use accumulator::Accumulator;
     use adder::Adder;
     use ink_storage::{
-        traits::{
-            PackedLayout,
-            SpreadLayout,
-        },
+        traits::{PackedLayout, SpreadLayout},
         Lazy,
     };
     use subber::Subber;
@@ -78,28 +75,11 @@ mod delegator {
     impl Delegator {
         /// Instantiate a delegator with the given sub-contract codes.
         #[ink(constructor)]
-        pub fn new(
-            init_value: i32,
-            accumulator_code_hash: Hash,
-            adder_code_hash: Hash,
-            subber_code_hash: Hash,
-        ) -> Self {
+        pub fn new(init_value: i32) -> Self {
             let total_balance = Self::env().balance();
-            let accumulator = Accumulator::new(init_value)
-                .endowment(total_balance / 4)
-                .code_hash(accumulator_code_hash)
-                .instantiate()
-                .expect("failed at instantiating the `Accumulator` contract");
-            let adder = Adder::new(accumulator.clone())
-                .endowment(total_balance / 4)
-                .code_hash(adder_code_hash)
-                .instantiate()
-                .expect("failed at instantiating the `Adder` contract");
-            let subber = Subber::new(accumulator.clone())
-                .endowment(total_balance / 4)
-                .code_hash(subber_code_hash)
-                .instantiate()
-                .expect("failed at instantiating the `Subber` contract");
+            let accumulator = Accumulator::new(init_value);
+            let adder = Adder::new(accumulator.clone());
+            let subber = Subber::new(accumulator.clone());
             Self {
                 which: Which::Adder,
                 accumulator: Lazy::new(accumulator),

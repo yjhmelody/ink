@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    generator,
-    GenerateCode,
-    GenerateCodeUsing,
-};
+use crate::{generator, GenerateCode, GenerateCodeUsing};
 use derive_more::From;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
@@ -37,10 +33,13 @@ impl AsRef<ir::Contract> for Contract<'_> {
 impl GenerateCode for Contract<'_> {
     /// Generates ink! contract code.
     fn generate_code(&self) -> TokenStream2 {
+        let original_module = self.contract.original_module();
+
         let module = self.contract.module();
         let ident = module.ident();
         let attrs = module.attrs();
         let vis = module.vis();
+        let original = self.generate_code_using::<generator::Original>();
         let env = self.generate_code_using::<generator::Env>();
         let storage = self.generate_code_using::<generator::Storage>();
         let events = self.generate_code_using::<generator::Events>();
@@ -54,7 +53,12 @@ impl GenerateCode for Contract<'_> {
             .items()
             .iter()
             .filter_map(ir::Item::map_rust_item);
+
         quote! {
+            #original_module
+
+            #original pub mod test {}
+
             #( #attrs )*
             #vis mod #ident {
                 #env

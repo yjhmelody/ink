@@ -12,22 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    BitStash,
-    CountFree,
-};
+use super::{BitStash, CountFree};
 use crate::{
-    collections::{
-        Bitvec as StorageBitvec,
-        Vec as StorageVec,
-    },
+    collections::{Bitvec as StorageBitvec, Vec as StorageVec},
     traits::{
-        forward_clear_packed,
-        forward_pull_packed,
-        forward_push_packed,
-        KeyPtr,
-        PackedLayout,
-        SpreadLayout,
+        forward_clear_packed, forward_pull_packed, forward_push_packed, KeyPtr,
+        PackedLayout, SpreadLayout,
     },
 };
 use ink_primitives::Key;
@@ -35,11 +25,7 @@ use ink_primitives::Key;
 #[cfg(feature = "std")]
 const _: () = {
     use crate::traits::StorageLayout;
-    use ink_metadata::layout::{
-        FieldLayout,
-        Layout,
-        StructLayout,
-    };
+    use ink_metadata::layout::{FieldLayout, Layout, StructLayout};
 
     impl StorageLayout for BitStash {
         fn layout(key_ptr: &mut KeyPtr) -> Layout {

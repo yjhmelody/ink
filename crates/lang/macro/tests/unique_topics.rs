@@ -88,11 +88,9 @@ mod my_contract {
         // Sort the vector
         items.sort_by(|a, b| Ord::cmp(a.as_ref(), b.as_ref()));
         // And then find any two consecutive equal elements.
-        items.windows(2).any(|w| {
-            match w {
-                &[ref a, ref b] => a == b,
-                _ => false,
-            }
+        items.windows(2).any(|w| match w {
+            &[ref a, ref b] => a == b,
+            _ => false,
         })
     }
 }

@@ -13,10 +13,7 @@
 // limitations under the License.
 
 use super::Bitvec as StorageBitvec;
-use crate::traits::{
-    KeyPtr,
-    SpreadLayout,
-};
+use crate::traits::{KeyPtr, SpreadLayout};
 use ink_primitives::Key;
 
 #[test]

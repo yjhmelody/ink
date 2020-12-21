@@ -61,10 +61,4 @@ mod hashmap_entry_api_tests;
 mod test_utils;
 
 #[doc(inline)]
-pub use self::{
-    alloc::Box,
-    collections::Vec,
-    lazy::Lazy,
-    memory::Memory,
-    pack::Pack,
-};
+pub use self::{alloc::Box, collections::Vec, lazy::Lazy, memory::Memory, pack::Pack};

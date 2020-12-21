@@ -12,23 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    CacheCell,
-    EntryState,
-    StorageEntry,
-};
+use super::{CacheCell, EntryState, StorageEntry};
 use crate::traits::{
-    clear_spread_root_opt,
-    pull_spread_root_opt,
-    ExtKeyPtr,
-    KeyPtr,
-    SpreadLayout,
+    clear_spread_root_opt, pull_spread_root_opt, ExtKeyPtr, KeyPtr, SpreadLayout,
 };
-use core::{
-    fmt,
-    fmt::Debug,
-    ptr::NonNull,
-};
+use core::{fmt, fmt::Debug, ptr::NonNull};
 use ink_primitives::Key;
 
 /// A lazy storage entity.
@@ -394,16 +382,9 @@ fn assert_footprint_threshold(footprint: u64) {
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        EntryState,
-        LazyCell,
-        StorageEntry,
-    };
+    use super::{EntryState, LazyCell, StorageEntry};
     use crate::{
-        traits::{
-            KeyPtr,
-            SpreadLayout,
-        },
+        traits::{KeyPtr, SpreadLayout},
         Lazy,
     };
     use ink_env::test::run_test;

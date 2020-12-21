@@ -512,6 +512,11 @@ pub fn contract(attr: TokenStream, item: TokenStream) -> TokenStream {
     contract::generate(attr.into(), item.into()).into()
 }
 
+#[proc_macro_attribute]
+pub fn original(attr: TokenStream, item: TokenStream) -> TokenStream {
+    contract::generate(attr.into(), item.into()).into()
+}
+
 /// Marks trait definitions to ink! as special ink! trait definitions.
 ///
 /// There are some restrictions that apply to ink! trait definitions that

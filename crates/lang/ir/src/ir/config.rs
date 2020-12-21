@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    ast,
-    error::ExtError as _,
-};
+use crate::{ast, error::ExtError as _};
 use core::convert::TryFrom;
 use syn::spanned::Spanned;
 
@@ -38,6 +35,8 @@ pub struct Config {
     /// be used to change the underlying environmental types of an ink! smart
     /// contract.
     env_types: Option<Environment>,
+
+    original: Option<syn::LitStr>,
 }
 
 /// Return an error to notify about duplicate ink! config arguments.
@@ -65,6 +64,7 @@ impl TryFrom<ast::AttributeArgs> for Config {
         let mut dynamic_storage_allocator: Option<(bool, ast::MetaNameValue)> = None;
         let mut as_dependency: Option<(bool, ast::MetaNameValue)> = None;
         let mut env_types: Option<(Environment, ast::MetaNameValue)> = None;
+        let mut original: Option<(syn::LitStr, ast::MetaNameValue)> = None;
         for arg in args.into_iter() {
             if arg.name.is_ident("dynamic_storage_allocator") {
                 if let Some((_, ast)) = dynamic_storage_allocator {
@@ -72,7 +72,7 @@ impl TryFrom<ast::AttributeArgs> for Config {
                         ast,
                         arg,
                         "dynamic_storage_allocator",
-                    ))
+                    ));
                 }
                 if let ast::PathOrLit::Lit(syn::Lit::Bool(lit_bool)) = &arg.value {
                     dynamic_storage_allocator = Some((lit_bool.value, arg))
@@ -80,11 +80,11 @@ impl TryFrom<ast::AttributeArgs> for Config {
                     return Err(format_err_spanned!(
                         arg,
                         "expected a bool literal for `dynamic_storage_allocator` ink! config argument",
-                    ))
+                    ));
                 }
             } else if arg.name.is_ident("compile_as_dependency") {
                 if let Some((_, ast)) = as_dependency {
-                    return Err(duplicate_config_err(ast, arg, "compile_as_dependency"))
+                    return Err(duplicate_config_err(ast, arg, "compile_as_dependency"));
                 }
                 if let ast::PathOrLit::Lit(syn::Lit::Bool(lit_bool)) = &arg.value {
                     as_dependency = Some((lit_bool.value, arg))
@@ -92,11 +92,11 @@ impl TryFrom<ast::AttributeArgs> for Config {
                     return Err(format_err_spanned!(
                         arg,
                         "expected a bool literal for `compile_as_dependency` ink! config argument",
-                    ))
+                    ));
                 }
             } else if arg.name.is_ident("env_types") {
                 if let Some((_, ast)) = env_types {
-                    return Err(duplicate_config_err(ast, arg, "env_types"))
+                    return Err(duplicate_config_err(ast, arg, "env_types"));
                 }
                 if let ast::PathOrLit::Path(path) = &arg.value {
                     env_types = Some((Environment { path: path.clone() }, arg))
@@ -104,19 +104,33 @@ impl TryFrom<ast::AttributeArgs> for Config {
                     return Err(format_err_spanned!(
                         arg,
                         "expected a path for `env_types` ink! config argument",
-                    ))
+                    ));
+                }
+            } else if arg.name.is_ident("original") {
+                if let Some((_, ast)) = original {
+                    return Err(duplicate_config_err(ast, arg, "original"));
+                }
+
+                if let ast::PathOrLit::Lit(syn::Lit::Str(original_name)) = &arg.value {
+                    original = Some((original_name.clone(), arg))
+                } else {
+                    return Err(format_err_spanned!(
+                        arg,
+                        "expected a mod name for `original` ink! config argument",
+                    ));
                 }
             } else {
                 return Err(format_err_spanned!(
                     arg,
                     "encountered unknown or unsupported ink! config argument",
-                ))
+                ));
             }
         }
         Ok(Config {
             dynamic_storage_allocator: dynamic_storage_allocator.map(|(value, _)| value),
             as_dependency: as_dependency.map(|(value, _)| value),
             env_types: env_types.map(|(value, _)| value),
+            original: original.map(|(value, _)| value),
         })
     }
 }
@@ -148,6 +162,10 @@ impl Config {
     /// If nothing has been specified returns the default which is `false`.
     pub fn is_compile_as_dependency_enabled(&self) -> bool {
         self.as_dependency.unwrap_or(false)
+    }
+
+    pub fn original_mod_name(&self) -> Option<syn::LitStr> {
+        self.original.clone()
     }
 }
 

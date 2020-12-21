@@ -16,11 +16,7 @@ use crate::GenerateCode;
 use derive_more::From;
 use heck::CamelCase as _;
 use proc_macro2::TokenStream as TokenStream2;
-use quote::{
-    format_ident,
-    quote,
-    quote_spanned,
-};
+use quote::{format_ident, quote, quote_spanned};
 
 /// Generator to create the ink! storage struct and important trait impls.
 #[derive(From)]

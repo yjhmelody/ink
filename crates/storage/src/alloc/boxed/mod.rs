@@ -19,10 +19,7 @@ mod storage;
 mod tests;
 
 use crate::{
-    alloc::{
-        alloc,
-        DynamicAllocation,
-    },
+    alloc::{alloc, DynamicAllocation},
     lazy::Lazy,
     traits::SpreadLayout,
 };

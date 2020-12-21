@@ -12,19 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use criterion::{
-    black_box,
-    criterion_group,
-    criterion_main,
-    Criterion,
-};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use ink_primitives::Key;
 use ink_storage::{
     collections::Stash as StorageStash,
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
 };
 
 criterion_group!(populated_cache, bench_remove_occupied_populated_cache,);

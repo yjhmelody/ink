@@ -91,12 +91,7 @@ mod tuples;
 #[cfg(all(test, feature = "ink-fuzz-tests"))]
 mod fuzz_tests;
 
-use super::{
-    clear_packed_root,
-    pull_packed_root,
-    push_packed_root,
-    PackedLayout,
-};
+use super::{clear_packed_root, pull_packed_root, push_packed_root, PackedLayout};
 use crate::traits::KeyPtr;
 
 /// Returns the greater of both values.

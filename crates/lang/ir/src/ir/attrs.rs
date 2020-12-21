@@ -12,19 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    error::ExtError as _,
-    ir,
-    ir::Selector,
-};
-use core::{
-    convert::TryFrom,
-    result::Result,
-};
-use proc_macro2::{
-    Ident,
-    Span,
-};
+use crate::{error::ExtError as _, ir, ir::Selector};
+use core::{convert::TryFrom, result::Result};
+use proc_macro2::{Ident, Span};
 use regex::Regex;
 use syn::spanned::Spanned;
 
@@ -129,7 +119,7 @@ impl InkAttribute {
             return Err(format_err!(
                 self.span(),
                 "unexpected first ink! attribute argument",
-            ))
+            ));
         }
         Ok(())
     }
@@ -156,7 +146,7 @@ impl InkAttribute {
                 .into_combine(format_err!(
                     seen.span(),
                     "first equal ink! attribute argument here"
-                )))
+                )));
             }
             seen.insert(arg);
         }
@@ -188,7 +178,7 @@ impl InkAttribute {
             return Err(format_err!(
                 Span::call_site(),
                 "encountered unexpected empty expanded ink! attribute arguments",
-            ))
+            ));
         }
         Self::ensure_no_duplicate_args(&args)?;
         Ok(Self { args })
@@ -214,7 +204,7 @@ impl InkAttribute {
     pub fn namespace(&self) -> Option<ir::Namespace> {
         self.args().find_map(|arg| {
             if let ir::AttributeArgKind::Namespace(namespace) = arg.kind() {
-                return Some(namespace.clone())
+                return Some(namespace.clone());
             }
             None
         })
@@ -224,7 +214,7 @@ impl InkAttribute {
     pub fn selector(&self) -> Option<ir::Selector> {
         self.args().find_map(|arg| {
             if let ir::AttributeArgKind::Selector(selector) = arg.kind() {
-                return Some(*selector)
+                return Some(*selector);
             }
             None
         })
@@ -417,11 +407,9 @@ where
         .map(<Attribute as TryFrom<_>>::try_from)
         .collect::<Result<Vec<Attribute>, syn::Error>>()?
         .into_iter()
-        .partition_map(|attr| {
-            match attr {
-                Attribute::Ink(ink_attr) => Either::Left(ink_attr),
-                Attribute::Other(other_attr) => Either::Right(other_attr),
-            }
+        .partition_map(|attr| match attr {
+            Attribute::Ink(ink_attr) => Either::Left(ink_attr),
+            Attribute::Other(other_attr) => Either::Right(other_attr),
         });
     Attribute::ensure_no_duplicate_attrs(&ink_attrs)?;
     Ok((ink_attrs, others))
@@ -486,7 +474,7 @@ impl Attribute {
                     attr.span(),
                     "encountered duplicate ink! attribute"
                 )
-                .into_combine(format_err!(seen.span(), "first ink! attribute here")))
+                .into_combine(format_err!(seen.span(), "first ink! attribute here")));
             }
             seen.insert(attr);
         }
@@ -499,7 +487,7 @@ impl TryFrom<syn::Attribute> for Attribute {
 
     fn try_from(attr: syn::Attribute) -> Result<Self, Self::Error> {
         if attr.path.is_ident("ink") {
-            return <InkAttribute as TryFrom<_>>::try_from(attr).map(Into::into)
+            return <InkAttribute as TryFrom<_>>::try_from(attr).map(Into::into);
         }
         Ok(Attribute::Other(attr))
     }
@@ -516,7 +504,7 @@ impl TryFrom<syn::Attribute> for InkAttribute {
 
     fn try_from(attr: syn::Attribute) -> Result<Self, Self::Error> {
         if !attr.path.is_ident("ink") {
-            return Err(format_err_spanned!(attr, "unexpected non-ink! attribute"))
+            return Err(format_err_spanned!(attr, "unexpected non-ink! attribute"));
         }
         match attr.parse_meta().map_err(|_| {
             format_err_spanned!(attr, "unexpected ink! attribute structure")
@@ -532,7 +520,7 @@ impl TryFrom<syn::Attribute> for InkAttribute {
                     return Err(format_err_spanned!(
                         attr,
                         "encountered unsupported empty ink! attribute"
-                    ))
+                    ));
                 }
                 Ok(InkAttribute { args })
             }
@@ -558,7 +546,7 @@ impl InkAttribute {
                 return Err(format_err!(
                     arg.span(),
                     "encountered conflicting ink! attribute argument",
-                ))
+                ));
             }
         }
         Ok(())
@@ -583,86 +571,78 @@ impl TryFrom<syn::NestedMeta> for AttributeArg {
 
     fn try_from(nested_meta: syn::NestedMeta) -> Result<Self, Self::Error> {
         match nested_meta {
-            syn::NestedMeta::Meta(meta) => {
-                match &meta {
-                    syn::Meta::NameValue(name_value) => {
-                        if name_value.path.is_ident("selector") {
-                            if let syn::Lit::Str(lit_str) = &name_value.lit {
-                                let regex = Regex::new(
+            syn::NestedMeta::Meta(meta) => match &meta {
+                syn::Meta::NameValue(name_value) => {
+                    if name_value.path.is_ident("selector") {
+                        if let syn::Lit::Str(lit_str) = &name_value.lit {
+                            let regex = Regex::new(
                                     r"0x([\da-fA-F]{2})([\da-fA-F]{2})([\da-fA-F]{2})([\da-fA-F]{2})"
                                 ).map_err(|_| invalid_selector_err_regex(&meta))?;
-                                let str = lit_str.value();
-                                let cap = regex
-                                    .captures(&str)
-                                    .ok_or_else(|| invalid_selector_err_regex(&meta))?;
-                                let selector_bytes = [
-                                    u8::from_str_radix(&cap[1], 16)
-                                        .map_err(|_| err_non_hex(&meta, 0))?,
-                                    u8::from_str_radix(&cap[2], 16)
-                                        .map_err(|_| err_non_hex(&meta, 1))?,
-                                    u8::from_str_radix(&cap[3], 16)
-                                        .map_err(|_| err_non_hex(&meta, 2))?,
-                                    u8::from_str_radix(&cap[4], 16)
-                                        .map_err(|_| err_non_hex(&meta, 3))?,
-                                ];
-                                return Ok(AttributeArg {
-                                    ast: meta,
-                                    kind: AttributeArgKind::Selector(Selector::new(
-                                        selector_bytes,
-                                    )),
-                                })
-                            }
-                        }
-                        if name_value.path.is_ident("namespace") {
-                            if let syn::Lit::Str(lit_str) = &name_value.lit {
-                                let bytes = lit_str.value().into_bytes();
-                                return Ok(AttributeArg {
-                                    ast: meta,
-                                    kind: AttributeArgKind::Namespace(Namespace::from(
-                                        bytes,
-                                    )),
-                                })
-                            }
-                        }
-                        Err(format_err_spanned!(
-                            meta,
-                            "unknown ink! attribute argument (name = value)",
-                        ))
-                    }
-                    syn::Meta::Path(path) => {
-                        let kind: Option<AttributeArgKind> =
-                            path.get_ident().map(Ident::to_string).and_then(|ident| {
-                                match ident.as_str() {
-                                    "storage" => Some(AttributeArgKind::Storage),
-                                    "message" => Some(AttributeArgKind::Message),
-                                    "constructor" => Some(AttributeArgKind::Constructor),
-                                    "event" => Some(AttributeArgKind::Event),
-                                    "anonymous" => Some(AttributeArgKind::Anonymous),
-                                    "topic" => Some(AttributeArgKind::Topic),
-                                    "payable" => Some(AttributeArgKind::Payable),
-                                    "impl" => Some(AttributeArgKind::Implementation),
-                                    _ => None,
-                                }
+                            let str = lit_str.value();
+                            let cap = regex
+                                .captures(&str)
+                                .ok_or_else(|| invalid_selector_err_regex(&meta))?;
+                            let selector_bytes = [
+                                u8::from_str_radix(&cap[1], 16)
+                                    .map_err(|_| err_non_hex(&meta, 0))?,
+                                u8::from_str_radix(&cap[2], 16)
+                                    .map_err(|_| err_non_hex(&meta, 1))?,
+                                u8::from_str_radix(&cap[3], 16)
+                                    .map_err(|_| err_non_hex(&meta, 2))?,
+                                u8::from_str_radix(&cap[4], 16)
+                                    .map_err(|_| err_non_hex(&meta, 3))?,
+                            ];
+                            return Ok(AttributeArg {
+                                ast: meta,
+                                kind: AttributeArgKind::Selector(Selector::new(
+                                    selector_bytes,
+                                )),
                             });
-                        if let Some(kind) = kind {
-                            return Ok(AttributeArg { ast: meta, kind })
                         }
-                        Err(format_err_spanned!(meta, "unknown ink! attribute (path)"))
                     }
-                    syn::Meta::List(_) => {
-                        Err(format_err_spanned!(
-                            meta,
-                            "unknown ink! attribute argument (list)"
-                        ))
+                    if name_value.path.is_ident("namespace") {
+                        if let syn::Lit::Str(lit_str) = &name_value.lit {
+                            let bytes = lit_str.value().into_bytes();
+                            return Ok(AttributeArg {
+                                ast: meta,
+                                kind: AttributeArgKind::Namespace(Namespace::from(bytes)),
+                            });
+                        }
                     }
+                    Err(format_err_spanned!(
+                        meta,
+                        "unknown ink! attribute argument (name = value)",
+                    ))
                 }
-            }
-            syn::NestedMeta::Lit(_) => {
-                Err(format_err_spanned!(
-                    nested_meta,
-                    "unknown ink! attribute argument (literal)"
-                ))
-            }
+                syn::Meta::Path(path) => {
+                    let kind: Option<AttributeArgKind> = path
+                        .get_ident()
+                        .map(Ident::to_string)
+                        .and_then(|ident| match ident.as_str() {
+                            "storage" => Some(AttributeArgKind::Storage),
+                            "message" => Some(AttributeArgKind::Message),
+                            "constructor" => Some(AttributeArgKind::Constructor),
+                            "event" => Some(AttributeArgKind::Event),
+                            "anonymous" => Some(AttributeArgKind::Anonymous),
+                            "topic" => Some(AttributeArgKind::Topic),
+                            "payable" => Some(AttributeArgKind::Payable),
+                            "impl" => Some(AttributeArgKind::Implementation),
+                            _ => None,
+                        });
+                    if let Some(kind) = kind {
+                        return Ok(AttributeArg { ast: meta, kind });
+                    }
+                    Err(format_err_spanned!(meta, "unknown ink! attribute (path)"))
+                }
+                syn::Meta::List(_) => Err(format_err_spanned!(
+                    meta,
+                    "unknown ink! attribute argument (list)"
+                )),
+            },
+            syn::NestedMeta::Lit(_) => Err(format_err_spanned!(
+                nested_meta,
+                "unknown ink! attribute argument (literal)"
+            )),
         }
     }
 }
@@ -738,15 +718,13 @@ mod tests {
         impl From<ir::Attribute> for Attribute {
             fn from(attr: ir::Attribute) -> Self {
                 match attr {
-                    ir::Attribute::Ink(ink_attr) => {
-                        Self::Ink(
-                            ink_attr
-                                .args
-                                .into_iter()
-                                .map(|arg| arg.kind)
-                                .collect::<Vec<_>>(),
-                        )
-                    }
+                    ir::Attribute::Ink(ink_attr) => Self::Ink(
+                        ink_attr
+                            .args
+                            .into_iter()
+                            .map(|arg| arg.kind)
+                            .collect::<Vec<_>>(),
+                    ),
                     ir::Attribute::Other(other_attr) => Self::Other(other_attr),
                 }
             }

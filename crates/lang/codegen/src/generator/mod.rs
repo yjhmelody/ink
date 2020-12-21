@@ -20,21 +20,20 @@ mod events;
 mod ink_test;
 mod item_impls;
 mod metadata;
+mod original;
 mod storage;
 mod trait_def;
 
 pub use self::{
     contract::Contract,
-    cross_calling::{
-        CrossCalling,
-        CrossCallingConflictCfg,
-    },
+    cross_calling::{CrossCalling, CrossCallingConflictCfg},
     dispatch::Dispatch,
     env::Env,
     events::Events,
     ink_test::InkTest,
     item_impls::ItemImpls,
     metadata::Metadata,
+    original::Original,
     storage::Storage,
     trait_def::TraitDefinition,
 };

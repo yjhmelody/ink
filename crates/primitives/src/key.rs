@@ -14,10 +14,7 @@
 
 use core::{
     fmt,
-    ops::{
-        Add,
-        AddAssign,
-    },
+    ops::{Add, AddAssign},
 };
 
 /// Key into contract storage.
@@ -122,7 +119,7 @@ impl Key {
     /// byte order.
     pub fn try_as_bytes(&self) -> Option<&[u8; 32]> {
         if cfg!(target_endian = "little") {
-            return Some(self.as_bytes())
+            return Some(self.as_bytes());
         }
         None
     }
@@ -228,12 +225,7 @@ impl<'a, 'b> Add<&'b u64> for &'a Key {
 
 #[cfg(feature = "std")]
 const _: () = {
-    use scale_info::{
-        build::Fields,
-        Path,
-        Type,
-        TypeInfo,
-    };
+    use scale_info::{build::Fields, Path, Type, TypeInfo};
 
     impl TypeInfo for Key {
         fn type_info() -> Type {

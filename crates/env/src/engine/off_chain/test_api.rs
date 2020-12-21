@@ -16,21 +16,9 @@
 
 #[cfg(feature = "ink-unstable-chain-extensions")]
 use super::chain_extension::ChainExtension;
-pub use super::{
-    db::ChainSpec,
-    CallData,
-    EmittedEvent,
-};
-use super::{
-    db::ExecContext,
-    AccountError,
-    EnvInstance,
-    OnInstance,
-};
-use crate::{
-    Environment,
-    Result,
-};
+pub use super::{db::ChainSpec, CallData, EmittedEvent};
+use super::{db::ExecContext, AccountError, EnvInstance, OnInstance};
+use crate::{Environment, Result};
 use ink_prelude::string::String;
 
 /// Pushes a contract execution context.

@@ -15,25 +15,14 @@
 use super::SmallVec;
 use crate::{
     lazy::LazyArrayLength,
-    traits::{
-        KeyPtr,
-        PackedLayout,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, PackedLayout, SpreadLayout},
 };
 use generic_array::typenum::Unsigned;
 
 #[cfg(feature = "std")]
 const _: () = {
-    use crate::{
-        lazy::LazyArray,
-        traits::StorageLayout,
-    };
-    use ink_metadata::layout::{
-        FieldLayout,
-        Layout,
-        StructLayout,
-    };
+    use crate::{lazy::LazyArray, traits::StorageLayout};
+    use ink_metadata::layout::{FieldLayout, Layout, StructLayout};
     use scale_info::TypeInfo;
 
     impl<T, N> StorageLayout for SmallVec<T, N>

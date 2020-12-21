@@ -77,23 +77,11 @@ mod tests;
 #[doc(inline)]
 pub use self::engine::off_chain::test_api as test;
 
-use self::backend::{
-    EnvBackend,
-    TypedEnvBackend,
-};
+use self::backend::{EnvBackend, TypedEnvBackend};
 pub use self::{
     api::*,
     backend::ReturnFlags,
-    error::{
-        Error,
-        Result,
-    },
+    error::{Error, Result},
     topics::Topics,
-    types::{
-        AccountId,
-        Clear,
-        DefaultEnvironment,
-        Environment,
-        Hash,
-    },
+    types::{AccountId, Clear, DefaultEnvironment, Environment, Hash},
 };

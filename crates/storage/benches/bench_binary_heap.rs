@@ -13,21 +13,13 @@
 // limitations under the License.
 
 use criterion::{
-    criterion_group,
-    criterion_main,
-    measurement::WallTime,
-    BatchSize,
-    BenchmarkGroup,
-    BenchmarkId,
-    Criterion,
+    criterion_group, criterion_main, measurement::WallTime, BatchSize, BenchmarkGroup,
+    BenchmarkId, Criterion,
 };
 use ink_primitives::Key;
 use ink_storage::{
     collections::BinaryHeap,
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
 };
 use std::time::Duration;
 
@@ -157,11 +149,9 @@ impl NewHeap {
 
     pub fn create_heap(&self) -> BinaryHeap<u32> {
         match self {
-            NewHeap::Lazy(root_key) => {
-                <BinaryHeap<u32> as SpreadLayout>::pull_spread(&mut KeyPtr::from(
-                    *root_key,
-                ))
-            }
+            NewHeap::Lazy(root_key) => <BinaryHeap<u32> as SpreadLayout>::pull_spread(
+                &mut KeyPtr::from(*root_key),
+            ),
             NewHeap::Populated(ref values) => binary_heap::from_slice(values),
         }
     }

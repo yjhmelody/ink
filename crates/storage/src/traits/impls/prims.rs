@@ -13,19 +13,9 @@
 // limitations under the License.
 
 use super::max;
-use crate::traits::{
-    KeyPtr,
-    PackedLayout,
-    SpreadLayout,
-};
-use ink_env::{
-    AccountId,
-    Hash,
-};
-use ink_prelude::{
-    boxed::Box,
-    string::String,
-};
+use crate::traits::{KeyPtr, PackedLayout, SpreadLayout};
+use ink_env::{AccountId, Hash};
+use ink_prelude::{boxed::Box, string::String};
 use ink_primitives::Key;
 
 macro_rules! impl_layout_for_primitive {

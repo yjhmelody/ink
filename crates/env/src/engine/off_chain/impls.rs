@@ -12,32 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    hashing,
-    Account,
-    EnvInstance,
-};
+use super::{hashing, Account, EnvInstance};
 use crate::{
-    call::{
-        utils::ReturnType,
-        CallParams,
-        CreateParams,
-    },
-    hash::{
-        Blake2x128,
-        Blake2x256,
-        CryptoHash,
-        HashOutput,
-        Keccak256,
-        Sha2x256,
-    },
+    call::{utils::ReturnType, CallParams, CreateParams},
+    hash::{Blake2x128, Blake2x256, CryptoHash, HashOutput, Keccak256, Sha2x256},
     topics::Topics,
-    EnvBackend,
-    Environment,
-    Error,
-    Result,
-    ReturnFlags,
-    TypedEnvBackend,
+    EnvBackend, Environment, Error, Result, ReturnFlags, TypedEnvBackend,
 };
 use core::convert::TryInto;
 use ink_primitives::Key;
@@ -216,7 +196,7 @@ impl EnvInstance {
             .expect("account of executed contract must exist")
             .balance::<T>()?;
         if src_value < value {
-            return Err(Error::TransferFailed)
+            return Err(Error::TransferFailed);
         }
         let dst_value = self
             .accounts

@@ -13,22 +13,13 @@
 // limitations under the License.
 
 use crate::traits::{
-    impls::{
-        forward_clear_packed,
-        forward_pull_packed,
-        forward_push_packed,
-    },
-    KeyPtr,
-    PackedLayout,
-    SpreadLayout,
+    impls::{forward_clear_packed, forward_pull_packed, forward_push_packed},
+    KeyPtr, PackedLayout, SpreadLayout,
 };
 use ink_prelude::{
     collections::{
-        BTreeMap as StdBTreeMap,
-        BTreeSet as StdBTreeSet,
-        BinaryHeap as StdBinaryHeap,
-        LinkedList as StdLinkedList,
-        VecDeque as StdVecDeque,
+        BTreeMap as StdBTreeMap, BTreeSet as StdBTreeSet, BinaryHeap as StdBinaryHeap,
+        LinkedList as StdLinkedList, VecDeque as StdVecDeque,
     },
     vec::Vec,
 };

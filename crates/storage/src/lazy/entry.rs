@@ -13,27 +13,13 @@
 // limitations under the License.
 
 #[cfg(doc)]
-use crate::lazy::{
-    LazyArray,
-    LazyIndexMap,
-};
+use crate::lazy::{LazyArray, LazyIndexMap};
 use crate::traits::{
-    clear_packed_root,
-    clear_spread_root_opt,
-    pull_packed_root_opt,
-    pull_spread_root_opt,
-    push_packed_root_opt,
-    push_spread_root_opt,
-    ExtKeyPtr,
-    KeyPtr,
-    PackedLayout,
+    clear_packed_root, clear_spread_root_opt, pull_packed_root_opt, pull_spread_root_opt,
+    push_packed_root_opt, push_spread_root_opt, ExtKeyPtr, KeyPtr, PackedLayout,
     SpreadLayout,
 };
-use core::{
-    cell::Cell,
-    fmt,
-    fmt::Debug,
-};
+use core::{cell::Cell, fmt, fmt::Debug};
 use ink_prelude::vec::Vec;
 use ink_primitives::Key;
 

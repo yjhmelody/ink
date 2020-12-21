@@ -14,10 +14,7 @@
 
 use super::SmallVec;
 use crate::{
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
     Lazy,
 };
 use generic_array::typenum::*;

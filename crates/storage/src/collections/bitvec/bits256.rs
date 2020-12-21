@@ -12,13 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    super::extend_lifetime,
-    BitRefMut,
-    Bits64,
-    Index256,
-    Index64,
-};
+use super::{super::extend_lifetime, BitRefMut, Bits64, Index256, Index64};
 
 /// A chunk of 256 bits.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, scale::Encode, scale::Decode)]
@@ -70,7 +64,7 @@ impl<'a> Iterator for Iter<'a> {
         assert!(n < 256);
         let n = n as u16;
         if self.start + n >= self.end {
-            return None
+            return None;
         }
         let start = self.start + n;
         self.start += 1 + n;
@@ -96,7 +90,7 @@ impl<'a> DoubleEndedIterator for Iter<'a> {
         assert!(n < 256);
         let n = n as u16;
         if self.start + n >= self.end {
-            return None
+            return None;
         }
         self.end -= 1 + n;
         Some(self.bits.get(self.end as u8))
@@ -143,7 +137,7 @@ impl<'a> Iterator for IterMut<'a> {
         assert!(n < 256);
         let n = n as u16;
         if self.start + n >= self.end {
-            return None
+            return None;
         }
         let start = self.start + n;
         self.start += 1 + n;
@@ -169,7 +163,7 @@ impl<'a> DoubleEndedIterator for IterMut<'a> {
         assert!(n < 256);
         let n = n as u16;
         if self.start + n >= self.end {
-            return None
+            return None;
         }
         self.end -= 1 + n;
         Some(self.get(self.end as u8))
@@ -254,7 +248,7 @@ impl Bits256 {
         let mut offset: u32 = 0;
         for bits64 in &self.bits {
             if *bits64 != !0 {
-                return Some(((!bits64).leading_zeros() + offset) as u8)
+                return Some(((!bits64).leading_zeros() + offset) as u8);
             }
             offset += 64;
         }

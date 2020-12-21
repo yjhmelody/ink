@@ -14,41 +14,24 @@
 
 //! Implementation of ink! storage traits.
 
-use super::{
-    HashMap as StorageHashMap,
-    ValueEntry,
-};
+use super::{HashMap as StorageHashMap, ValueEntry};
 use crate::{
     collections::Stash as StorageStash,
     traits::{
-        forward_clear_packed,
-        forward_pull_packed,
-        forward_push_packed,
-        KeyPtr,
-        PackedLayout,
-        SpreadLayout,
+        forward_clear_packed, forward_pull_packed, forward_push_packed, KeyPtr,
+        PackedLayout, SpreadLayout,
     },
 };
-use ink_env::hash::{
-    CryptoHash,
-    HashOutput,
-};
+use ink_env::hash::{CryptoHash, HashOutput};
 use ink_primitives::Key;
 
 #[cfg(feature = "std")]
 const _: () = {
     use crate::{
         lazy::LazyHashMap,
-        traits::{
-            LayoutCryptoHasher,
-            StorageLayout,
-        },
+        traits::{LayoutCryptoHasher, StorageLayout},
     };
-    use ink_metadata::layout::{
-        FieldLayout,
-        Layout,
-        StructLayout,
-    };
+    use ink_metadata::layout::{FieldLayout, Layout, StructLayout};
     use scale_info::TypeInfo;
 
     impl<K, V, H> StorageLayout for StorageHashMap<K, V, H>

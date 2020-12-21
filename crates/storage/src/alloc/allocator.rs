@@ -15,10 +15,7 @@
 use super::DynamicAllocation;
 use crate::{
     collections::BitStash,
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
 };
 
 /// The dynamic allocator.
@@ -32,11 +29,7 @@ pub struct DynamicAllocator {
 #[cfg(feature = "std")]
 const _: () = {
     use crate::traits::StorageLayout;
-    use ink_metadata::layout::{
-        FieldLayout,
-        Layout,
-        StructLayout,
-    };
+    use ink_metadata::layout::{FieldLayout, Layout, StructLayout};
 
     impl StorageLayout for DynamicAllocator {
         fn layout(key_ptr: &mut KeyPtr) -> Layout {

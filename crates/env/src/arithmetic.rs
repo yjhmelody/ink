@@ -15,29 +15,10 @@
 //! Primitive traits for runtime arithmetic, copied from substrate
 
 use core::{
-    convert::{
-        TryFrom,
-        TryInto,
-    },
-    ops::{
-        Add,
-        AddAssign,
-        Div,
-        DivAssign,
-        Mul,
-        MulAssign,
-        Sub,
-        SubAssign,
-    },
+    convert::{TryFrom, TryInto},
+    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
 };
-use num_traits::{
-    checked_pow,
-    Bounded,
-    CheckedMul,
-    One,
-    Unsigned,
-    Zero,
-};
+use num_traits::{checked_pow, Bounded, CheckedMul, One, Unsigned, Zero};
 
 /// Types that allow for simple arithmetic operations.
 ///

@@ -12,35 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    CacheCell,
-    EntryState,
-    StorageEntry,
-};
+use super::{CacheCell, EntryState, StorageEntry};
 use crate::traits::{
-    clear_packed_root,
-    pull_packed_root_opt,
-    ExtKeyPtr,
-    KeyPtr,
-    PackedLayout,
+    clear_packed_root, pull_packed_root_opt, ExtKeyPtr, KeyPtr, PackedLayout,
     SpreadLayout,
 };
-use core::{
-    fmt,
-    fmt::Debug,
-    mem,
-    ptr::NonNull,
-};
+use core::{fmt, fmt::Debug, mem, ptr::NonNull};
 use generic_array::{
-    typenum::{
-        UInt,
-        UTerm,
-        Unsigned,
-        B0,
-        B1,
-    },
-    ArrayLength,
-    GenericArray,
+    typenum::{UInt, UTerm, Unsigned, B0, B1},
+    ArrayLength, GenericArray,
 };
 use ink_primitives::Key;
 
@@ -96,12 +76,7 @@ where
 #[cfg(feature = "std")]
 const _: () = {
     use crate::traits::StorageLayout;
-    use ink_metadata::layout::{
-        ArrayLayout,
-        CellLayout,
-        Layout,
-        LayoutKey,
-    };
+    use ink_metadata::layout::{ArrayLayout, CellLayout, Layout, LayoutKey};
     use scale_info::TypeInfo;
 
     impl<T, N> StorageLayout for LazyArray<T, N>
@@ -135,12 +110,15 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_map()
-            .entries(self.0.iter().enumerate().filter_map(|(key, entry)| {
-                match entry {
-                    Some(entry) => Some((key, entry)),
-                    None => None,
-                }
-            }))
+            .entries(
+                self.0
+                    .iter()
+                    .enumerate()
+                    .filter_map(|(key, entry)| match entry {
+                        Some(entry) => Some((key, entry)),
+                        None => None,
+                    }),
+            )
             .finish()
     }
 }
@@ -314,7 +292,7 @@ where
     /// Returns an exclusive reference to the entry at the given index if any.
     unsafe fn get_entry_mut(&self, at: Index) -> Option<&mut StorageEntry<T>> {
         if at >= Self::capacity() {
-            return None
+            return None;
         }
         (&mut *CacheCell::get_ptr(&self.entries[at as usize]).as_ptr()).as_mut()
     }
@@ -465,7 +443,7 @@ where
     /// Returns the offset key for the given index if not out of bounds.
     pub fn key_at(&self, at: Index) -> Option<Key> {
         if at >= self.capacity() {
-            return None
+            return None;
         }
         self.key.as_ref().map(|key| key + at as u64)
     }
@@ -573,7 +551,7 @@ where
         assert!(b < self.capacity(), "b is out of bounds");
         if a == b {
             // Bail out early if both indices are the same.
-            return
+            return;
         }
         let (loaded_a, loaded_b) =
             // SAFETY: The loaded `x` and `y` entries are distinct from each
@@ -585,7 +563,7 @@ where
             ) };
         if loaded_a.value().is_none() && loaded_b.value().is_none() {
             // Bail out since nothing has to be swapped if both values are `None`.
-            return
+            return;
         }
         // At this point at least one of the values is `Some` so we have to
         // perform the swap and set both entry states to mutated.
@@ -598,18 +576,10 @@ where
 #[cfg(test)]
 mod tests {
     use super::{
-        super::{
-            EntryState,
-            StorageEntry,
-        },
-        Index,
-        LazyArray,
-        LazyArrayLength,
+        super::{EntryState, StorageEntry},
+        Index, LazyArray, LazyArrayLength,
     };
-    use crate::traits::{
-        KeyPtr,
-        SpreadLayout,
-    };
+    use crate::traits::{KeyPtr, SpreadLayout};
     use generic_array::typenum::U4;
     use ink_primitives::Key;
 
@@ -625,11 +595,9 @@ mod tests {
             .cached_entries()
             .iter()
             .enumerate()
-            .filter_map(|(index, entry)| {
-                match entry {
-                    Some(entry) => Some((index as u32, entry)),
-                    None => None,
-                }
+            .filter_map(|(index, entry)| match entry {
+                Some(entry) => Some((index as u32, entry)),
+                None => None,
             })
             .zip(expected.iter().map(|(index, entry)| (*index, entry)))
         {

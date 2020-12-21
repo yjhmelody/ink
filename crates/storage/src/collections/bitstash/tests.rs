@@ -13,10 +13,7 @@
 // limitations under the License.
 
 use super::BitStash;
-use crate::traits::{
-    KeyPtr,
-    SpreadLayout,
-};
+use crate::traits::{KeyPtr, SpreadLayout};
 use ink_primitives::Key;
 
 cfg_if::cfg_if! {

@@ -12,16 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    error::ExtError as _,
-    ir,
-    ir::attrs::Attrs as _,
-};
+use crate::{error::ExtError as _, ir, ir::attrs::Attrs as _};
 use core::convert::TryFrom;
-use proc_macro2::{
-    Ident,
-    Span,
-};
+use proc_macro2::{Ident, Span};
 
 mod callable;
 mod constructor;
@@ -34,23 +27,11 @@ mod tests;
 
 use self::callable::ensure_callable_invariants;
 pub use self::{
-    callable::{
-        Callable,
-        CallableKind,
-        CallableWithSelector,
-        InputsIter,
-        Visibility,
-    },
+    callable::{Callable, CallableKind, CallableWithSelector, InputsIter, Visibility},
     constructor::Constructor,
     impl_item::ImplItem,
-    iter::{
-        IterConstructors,
-        IterMessages,
-    },
-    message::{
-        Message,
-        Receiver,
-    },
+    iter::{IterConstructors, IterMessages},
+    message::{Message, Receiver},
 };
 use quote::TokenStreamExt as _;
 use syn::spanned::Spanned;
@@ -168,7 +149,7 @@ impl ItemImpl {
                 .iter()
                 .all(|item| !ir::contains_ink_attributes(item.attrs()))
         {
-            return Ok(false)
+            return Ok(false);
         }
         // Check if the implementation block itself has been annotated with
         // `#[ink(impl)]` and return `true` if this is the case.
@@ -183,7 +164,7 @@ impl ItemImpl {
                 .ensure_first(&ir::AttributeArgKind::Implementation)
                 .is_ok()
             {
-                return Ok(true)
+                return Ok(true);
             }
         }
         // Check if any of the implementation block's methods either resembles
@@ -192,7 +173,7 @@ impl ItemImpl {
             match item {
                 syn::ImplItem::Method(method_item) => {
                     if !ir::contains_ink_attributes(&method_item.attrs) {
-                        continue 'repeat
+                        continue 'repeat;
                     }
                     let attr = ir::first_ink_attribute(&method_item.attrs)?
                         .expect("missing expected ink! attribute for struct");
@@ -218,25 +199,25 @@ impl TryFrom<syn::ItemImpl> for ItemImpl {
             return Err(format_err_spanned!(
                 item_impl,
                 "missing ink! annotations on the impl block or on any of its items"
-            ))
+            ));
         }
         if let Some(defaultness) = item_impl.defaultness {
             return Err(format_err_spanned!(
                 defaultness,
                 "default implementations are unsupported for ink! implementation blocks",
-            ))
+            ));
         }
         if let Some(unsafety) = item_impl.unsafety {
             return Err(format_err_spanned!(
                 unsafety,
                 "unsafe ink! implementation blocks are not supported",
-            ))
+            ));
         }
         if !item_impl.generics.params.is_empty() {
             return Err(format_err_spanned!(
                 item_impl.generics.params,
                 "generic ink! implementation blocks are not supported",
-            ))
+            ));
         }
         let impl_items = item_impl
             .items
@@ -266,7 +247,7 @@ impl TryFrom<syn::ItemImpl> for ItemImpl {
                         what,
                         if is_trait_impl { "trait" } else { "inherent" },
                         if requires_pub { "public" } else { "inherited" },
-                    ))
+                    ));
                 }
                 Ok(())
             }

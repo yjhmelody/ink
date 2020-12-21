@@ -16,12 +16,8 @@ use super::Box as StorageBox;
 use crate::{
     alloc::DynamicAllocation,
     traits::{
-        forward_clear_packed,
-        forward_pull_packed,
-        forward_push_packed,
-        KeyPtr,
-        PackedLayout,
-        SpreadLayout,
+        forward_clear_packed, forward_pull_packed, forward_push_packed, KeyPtr,
+        PackedLayout, SpreadLayout,
     },
 };
 use ink_prelude::vec::Vec;
@@ -30,11 +26,7 @@ use ink_primitives::Key;
 #[cfg(feature = "std")]
 const _: () = {
     use crate::traits::StorageLayout;
-    use ink_metadata::layout::{
-        CellLayout,
-        Layout,
-        LayoutKey,
-    };
+    use ink_metadata::layout::{CellLayout, Layout, LayoutKey};
 
     impl<T> StorageLayout for StorageBox<T>
     where

@@ -23,58 +23,20 @@ mod events;
 mod traits;
 
 pub use self::{
-    contract::{
-        DispatchMode,
-        DispatchUsingMode,
-    },
-    cross_calling::{
-        ForwardCall,
-        ForwardCallMut,
-        NeverReturns,
-        ToAccountId,
-    },
+    contract::{DispatchMode, DispatchUsingMode},
+    cross_calling::{ForwardCall, ForwardCallMut, NeverReturns, ToAccountId},
     dispatcher::{
-        deny_payment,
-        execute_constructor,
-        execute_message,
-        execute_message_mut,
-        AcceptsPayments,
-        ConstructorDispatcher,
-        EnablesDynamicStorageAllocator,
-        Execute,
+        deny_payment, execute_constructor, execute_message, execute_message_mut,
+        AcceptsPayments, ConstructorDispatcher, EnablesDynamicStorageAllocator, Execute,
         MessageDispatcher,
     },
-    env_access::{
-        ContractEnv,
-        Env,
-        EnvAccess,
-        StaticEnv,
-    },
-    error::{
-        DispatchError,
-        DispatchResult,
-        DispatchRetCode,
-    },
-    events::{
-        BaseEvent,
-        EmitEvent,
-    },
+    env_access::{ContractEnv, Env, EnvAccess, StaticEnv},
+    error::{DispatchError, DispatchResult, DispatchRetCode},
+    events::{BaseEvent, EmitEvent},
     traits::{
-        CheckedInkTrait,
-        Constructor,
-        FnInput,
-        FnOutput,
-        FnSelector,
-        FnState,
-        ImpliesReturn,
-        MessageMut,
-        MessageRef,
-        True,
+        CheckedInkTrait, Constructor, FnInput, FnOutput, FnSelector, FnState,
+        ImpliesReturn, MessageMut, MessageRef, True,
     },
 };
 pub use ::static_assertions;
-pub use ink_lang_macro::{
-    contract,
-    test,
-    trait_definition,
-};
+pub use ink_lang_macro::{contract, original, test, trait_definition};

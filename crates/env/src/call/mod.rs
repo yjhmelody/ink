@@ -24,34 +24,16 @@ mod selector;
 pub mod utils {
     pub use super::{
         call_builder::IndicateReturnType,
-        common::{
-            ReturnType,
-            Set,
-            Unset,
-            Unwrap,
-        },
+        common::{ReturnType, Set, Unset, Unwrap},
         execution_input::{
-            ArgsList,
-            Argument,
-            ArgumentList,
-            ArgumentListEnd,
-            EmptyArgumentList,
+            ArgsList, Argument, ArgumentList, ArgumentListEnd, EmptyArgumentList,
         },
     };
 }
 
 pub use self::{
-    call_builder::{
-        build_call,
-        CallBuilder,
-        CallParams,
-    },
-    create_builder::{
-        build_create,
-        CreateBuilder,
-        CreateParams,
-        FromAccountId,
-    },
+    call_builder::{build_call, CallBuilder, CallParams},
+    create_builder::{build_create, CreateBuilder, CreateParams, FromAccountId},
     execution_input::ExecutionInput,
     selector::Selector,
 };

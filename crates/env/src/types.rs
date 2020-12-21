@@ -32,15 +32,9 @@
 //! the trait bounds on the `Environment` trait types.
 
 use super::arithmetic::AtLeast32BitUnsigned;
-use core::{
-    array::TryFromSliceError,
-    convert::TryFrom,
-};
+use core::{array::TryFromSliceError, convert::TryFrom};
 use derive_more::From;
-use scale::{
-    Decode,
-    Encode,
-};
+use scale::{Decode, Encode};
 #[cfg(feature = "std")]
 use scale_info::TypeInfo;
 

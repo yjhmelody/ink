@@ -25,37 +25,17 @@ mod specs;
 mod utils;
 
 pub use self::specs::{
-    ConstructorSpec,
-    ConstructorSpecBuilder,
-    ContractSpec,
-    ContractSpecBuilder,
-    DisplayName,
-    EventParamSpec,
-    EventParamSpecBuilder,
-    EventSpec,
-    EventSpecBuilder,
-    MessageParamSpec,
-    MessageParamSpecBuilder,
-    MessageSpec,
-    MessageSpecBuilder,
-    ReturnTypeSpec,
-    Selector,
-    TypeSpec,
+    ConstructorSpec, ConstructorSpecBuilder, ContractSpec, ContractSpecBuilder,
+    DisplayName, EventParamSpec, EventParamSpecBuilder, EventSpec, EventSpecBuilder,
+    MessageParamSpec, MessageParamSpecBuilder, MessageSpec, MessageSpecBuilder,
+    ReturnTypeSpec, Selector, TypeSpec,
 };
 
 use impl_serde::serialize as serde_hex;
 
 #[cfg(feature = "derive")]
-use scale_info::{
-    form::CompactForm,
-    IntoCompact as _,
-    Registry,
-    RegistryReadOnly,
-};
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use scale_info::{form::CompactForm, IntoCompact as _, Registry, RegistryReadOnly};
+use serde::{Deserialize, Serialize};
 
 /// An entire ink! project for metadata file generation purposes.
 #[derive(Debug, Serialize, Deserialize)]

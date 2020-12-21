@@ -13,10 +13,7 @@
 // limitations under the License.
 
 use super::Box as StorageBox;
-use crate::traits::{
-    clear_spread_root,
-    SpreadLayout,
-};
+use crate::traits::{clear_spread_root, SpreadLayout};
 
 impl<T> Drop for StorageBox<T>
 where

@@ -12,22 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    generator,
-    GenerateCode,
-    GenerateCodeUsing as _,
-};
+use crate::{generator, GenerateCode, GenerateCodeUsing as _};
 use derive_more::From;
 use ir::Callable as _;
-use proc_macro2::{
-    Ident,
-    TokenStream as TokenStream2,
-};
-use quote::{
-    format_ident,
-    quote,
-    quote_spanned,
-};
+use proc_macro2::{Ident, TokenStream as TokenStream2};
+use quote::{format_ident, quote, quote_spanned};
 use syn::spanned::Spanned as _;
 
 /// Generates code for the message and constructor dispatcher.
@@ -517,13 +506,11 @@ impl Dispatch<'_> {
             quote! { ( #(#arg_pats),* ) }
         };
         let (mut_mod, msg_trait, exec_fn) = match message.receiver() {
-            ir::Receiver::RefMut => {
-                (
-                    Some(quote! { mut }),
-                    quote! { MessageMut },
-                    quote! { execute_message_mut },
-                )
-            }
+            ir::Receiver::RefMut => (
+                Some(quote! { mut }),
+                quote! { MessageMut },
+                quote! { execute_message_mut },
+            ),
             ir::Receiver::Ref => {
                 (None, quote! { MessageRef }, quote! { execute_message })
             }

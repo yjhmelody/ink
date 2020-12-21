@@ -30,50 +30,22 @@ pub mod utils;
 use self::attrs::Attribute;
 
 use self::attrs::{
-    contains_ink_attributes,
-    first_ink_attribute,
-    partition_attributes,
-    sanitize_attributes,
-    AttributeArg,
-    AttributeArgKind,
-    InkAttribute,
+    contains_ink_attributes, first_ink_attribute, partition_attributes,
+    sanitize_attributes, AttributeArg, AttributeArgKind, InkAttribute,
 };
 pub use self::{
     attrs::Namespace,
     config::Config,
     contract::Contract,
     ink_test::InkTest,
-    item::{
-        Event,
-        InkItem,
-        Item,
-        Storage,
-    },
+    item::{Event, InkItem, Item, Storage},
     item_impl::{
-        Callable,
-        CallableKind,
-        CallableWithSelector,
-        Constructor,
-        ImplItem,
-        InputsIter,
-        ItemImpl,
-        IterConstructors,
-        IterMessages,
-        Message,
-        Receiver,
-        Visibility,
+        Callable, CallableKind, CallableWithSelector, Constructor, ImplItem, InputsIter,
+        ItemImpl, IterConstructors, IterMessages, Message, Receiver, Visibility,
     },
-    item_mod::{
-        ItemMod,
-        IterEvents,
-        IterItemImpls,
-    },
+    item_mod::{ItemMod, IterEvents, IterItemImpls},
     selector::Selector,
     trait_def::{
-        InkTrait,
-        InkTraitConstructor,
-        InkTraitItem,
-        InkTraitMessage,
-        IterInkTraitItems,
+        InkTrait, InkTraitConstructor, InkTraitItem, InkTraitMessage, IterInkTraitItems,
     },
 };

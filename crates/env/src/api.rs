@@ -15,27 +15,12 @@
 //! The public raw interface towards the host Wasm engine.
 
 use crate::{
-    backend::{
-        EnvBackend,
-        ReturnFlags,
-        TypedEnvBackend,
-    },
-    call::{
-        utils::ReturnType,
-        CallParams,
-        CreateParams,
-    },
-    engine::{
-        EnvInstance,
-        OnInstance,
-    },
-    hash::{
-        CryptoHash,
-        HashOutput,
-    },
+    backend::{EnvBackend, ReturnFlags, TypedEnvBackend},
+    call::{utils::ReturnType, CallParams, CreateParams},
+    engine::{EnvInstance, OnInstance},
+    hash::{CryptoHash, HashOutput},
     topics::Topics,
-    Environment,
-    Result,
+    Environment, Result,
 };
 use ink_primitives::Key;
 

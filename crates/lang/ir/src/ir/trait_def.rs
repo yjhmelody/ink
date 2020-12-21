@@ -12,20 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    ir,
-    ir::idents_lint,
-};
+use crate::{ir, ir::idents_lint};
 use core::convert::TryFrom;
-use proc_macro2::{
-    Ident,
-    Span,
-    TokenStream as TokenStream2,
-};
-use syn::{
-    spanned::Spanned as _,
-    Result,
-};
+use proc_macro2::{Ident, Span, TokenStream as TokenStream2};
+use syn::{spanned::Spanned as _, Result};
 
 /// A checked ink! trait definition.
 #[derive(Debug, PartialEq, Eq)]
@@ -252,23 +242,15 @@ impl<'a> InkTraitMessage<'a> {
     pub fn mutates(&self) -> bool {
         self.sig()
             .receiver()
-            .map(|fn_arg| {
-                match fn_arg {
-                    syn::FnArg::Receiver(receiver) if receiver.mutability.is_some() => {
+            .map(|fn_arg| match fn_arg {
+                syn::FnArg::Receiver(receiver) if receiver.mutability.is_some() => true,
+                syn::FnArg::Typed(pat_type) => match &*pat_type.ty {
+                    syn::Type::Reference(reference) if reference.mutability.is_some() => {
                         true
                     }
-                    syn::FnArg::Typed(pat_type) => {
-                        match &*pat_type.ty {
-                            syn::Type::Reference(reference)
-                                if reference.mutability.is_some() =>
-                            {
-                                true
-                            }
-                            _ => false,
-                        }
-                    }
                     _ => false,
-                }
+                },
+                _ => false,
             })
             .expect("encountered missing receiver for ink! message")
     }
@@ -281,7 +263,7 @@ impl InkTrait {
             return Err(format_err_spanned!(
                 attr,
                 "unexpected attribute input for ink! trait definition"
-            ))
+            ));
         }
         let item_trait = syn::parse2::<syn::ItemTrait>(input)?;
         InkTrait::try_from(item_trait)
@@ -320,31 +302,31 @@ impl InkTrait {
             return Err(format_err_spanned!(
                 unsafety,
                 "ink! trait definitions cannot be unsafe"
-            ))
+            ));
         }
         if let Some(auto) = &item_trait.auto_token {
             return Err(format_err_spanned!(
                 auto,
                 "ink! trait definitions cannot be automatically implemented traits"
-            ))
+            ));
         }
         if !item_trait.generics.params.is_empty() {
             return Err(format_err_spanned!(
                 item_trait.generics.params,
                 "ink! trait definitions must not be generic"
-            ))
+            ));
         }
         if !matches!(item_trait.vis, syn::Visibility::Public(_)) {
             return Err(format_err_spanned!(
                 item_trait.vis,
                 "ink! trait definitions must have public visibility"
-            ))
+            ));
         }
         if !item_trait.supertraits.is_empty() {
             return Err(format_err_spanned!(
                 item_trait.supertraits,
                 "ink! trait definitions with supertraits are not supported, yet"
-            ))
+            ));
         }
         Ok(())
     }
@@ -421,43 +403,43 @@ impl InkTrait {
             return Err(format_err_spanned!(
                 default_impl,
                 "ink! trait methods with default implementations are not supported"
-            ))
+            ));
         }
         if let Some(constness) = &method.sig.constness {
             return Err(format_err_spanned!(
                 constness,
                 "const ink! trait methods are not supported"
-            ))
+            ));
         }
         if let Some(asyncness) = &method.sig.asyncness {
             return Err(format_err_spanned!(
                 asyncness,
                 "async ink! trait methods are not supported"
-            ))
+            ));
         }
         if let Some(unsafety) = &method.sig.unsafety {
             return Err(format_err_spanned!(
                 unsafety,
                 "unsafe ink! trait methods are not supported"
-            ))
+            ));
         }
         if let Some(abi) = &method.sig.abi {
             return Err(format_err_spanned!(
                 abi,
                 "ink! trait methods with non default ABI are not supported"
-            ))
+            ));
         }
         if let Some(variadic) = &method.sig.variadic {
             return Err(format_err_spanned!(
                 variadic,
                 "variadic ink! trait methods are not supported"
-            ))
+            ));
         }
         if !method.sig.generics.params.is_empty() {
             return Err(format_err_spanned!(
                 method.sig.generics.params,
                 "generic ink! trait methods are not supported"
-            ))
+            ));
         }
         match ir::first_ink_attribute(&method.attrs) {
             Ok(Some(ink_attr)) => {
@@ -504,7 +486,7 @@ impl InkTrait {
             return Err(format_err_spanned!(
                 receiver,
                 "ink! constructors must not have a `self` receiver",
-            ))
+            ));
         }
         match &constructor.sig.output {
             syn::ReturnType::Default => {
@@ -513,24 +495,22 @@ impl InkTrait {
                     "ink! constructors must return Self"
                 ))
             }
-            syn::ReturnType::Type(_, ty) => {
-                match &**ty {
-                    syn::Type::Path(type_path) => {
-                        if !type_path.path.is_ident("Self") {
-                            return Err(format_err_spanned!(
-                                type_path.path,
-                                "ink! constructors must return Self"
-                            ))
-                        }
-                    }
-                    unknown => {
+            syn::ReturnType::Type(_, ty) => match &**ty {
+                syn::Type::Path(type_path) => {
+                    if !type_path.path.is_ident("Self") {
                         return Err(format_err_spanned!(
-                            unknown,
+                            type_path.path,
                             "ink! constructors must return Self"
-                        ))
+                        ));
                     }
                 }
-            }
+                unknown => {
+                    return Err(format_err_spanned!(
+                        unknown,
+                        "ink! constructors must return Self"
+                    ))
+                }
+            },
         }
         Ok(())
     }
@@ -559,7 +539,7 @@ impl InkTrait {
                     return Err(format_err_spanned!(
                         receiver,
                         "self receiver of ink! message must be `&self` or `&mut self`"
-                    ))
+                    ));
                 }
             }
         }

@@ -12,24 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    alloc,
-    free,
-    ContractPhase,
-    DynamicAllocation,
-    DynamicAllocator,
-};
+use super::{alloc, free, ContractPhase, DynamicAllocation, DynamicAllocator};
 use crate::{
     alloc,
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
 };
-use ink_env::{
-    test,
-    DefaultEnvironment,
-};
+use ink_env::{test, DefaultEnvironment};
 use ink_primitives::Key;
 
 fn run_default_test<F>(f: F)

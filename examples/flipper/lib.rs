@@ -16,8 +16,14 @@
 
 use ink_lang as ink;
 
+// we keep original Flipper mod as `original_flipper` mod
+// Try to erase all ink's attrs.
 #[ink::contract]
 pub mod flipper {
+    // use std::fmt::Display;
+
+    // impl Foo for dyn Display  {}
+
     #[ink(storage)]
     pub struct Flipper {
         value: bool,

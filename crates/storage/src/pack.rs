@@ -13,13 +13,8 @@
 // limitations under the License.
 
 use crate::traits::{
-    clear_spread_root,
-    forward_clear_packed,
-    forward_pull_packed,
-    forward_push_packed,
-    KeyPtr,
-    PackedLayout,
-    SpreadLayout,
+    clear_spread_root, forward_clear_packed, forward_pull_packed, forward_push_packed,
+    KeyPtr, PackedLayout, SpreadLayout,
 };
 use ink_prelude::vec::Vec;
 use ink_primitives::Key;
@@ -142,11 +137,7 @@ where
 #[cfg(feature = "std")]
 const _: () = {
     use crate::traits::StorageLayout;
-    use ink_metadata::layout::{
-        CellLayout,
-        Layout,
-        LayoutKey,
-    };
+    use ink_metadata::layout::{CellLayout, Layout, LayoutKey};
     use scale_info::TypeInfo;
 
     impl<T> StorageLayout for Pack<T>
@@ -334,28 +325,15 @@ where
 mod tests {
     use super::Pack;
     use crate::traits::{
-        pull_packed_root,
-        push_packed_root,
-        KeyPtr,
-        PackedLayout,
-        SpreadLayout,
+        pull_packed_root, push_packed_root, KeyPtr, PackedLayout, SpreadLayout,
     };
     use core::{
         cmp::Ordering,
-        convert::{
-            AsMut,
-            AsRef,
-        },
-        ops::{
-            Deref,
-            DerefMut,
-        },
+        convert::{AsMut, AsRef},
+        ops::{Deref, DerefMut},
     };
     use ink_env::test::DefaultAccounts;
-    use ink_prelude::borrow::{
-        Borrow,
-        BorrowMut,
-    };
+    use ink_prelude::borrow::{Borrow, BorrowMut};
     use ink_primitives::Key;
 
     type ComplexTuple = (u8, [i32; 4], (bool, i32));

@@ -13,17 +13,10 @@
 // limitations under the License.
 
 use super::{
-    super::{
-        OffChainError,
-        TypedEncodedError,
-    },
-    OffAccountId,
-    OffBalance,
+    super::{OffChainError, TypedEncodedError},
+    OffAccountId, OffBalance,
 };
-use crate::{
-    Environment,
-    Error,
-};
+use crate::{Environment, Error};
 use core::cell::Cell;
 use derive_more::From;
 use ink_prelude::collections::BTreeMap;

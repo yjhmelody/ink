@@ -13,15 +13,9 @@
 // limitations under the License.
 
 use super::DynamicAllocator;
-use crate::traits::{
-    pull_spread_root,
-    push_spread_root,
-};
+use crate::traits::{pull_spread_root, push_spread_root};
 use cfg_if::cfg_if;
-use core::{
-    mem,
-    mem::ManuallyDrop,
-};
+use core::{mem, mem::ManuallyDrop};
 use ink_primitives::Key;
 
 /// The default dynamic allocator key offset.

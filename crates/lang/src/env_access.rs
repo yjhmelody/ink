@@ -14,17 +14,9 @@
 
 use core::marker::PhantomData;
 use ink_env::{
-    call::{
-        utils::ReturnType,
-        CallParams,
-        CreateParams,
-    },
-    hash::{
-        CryptoHash,
-        HashOutput,
-    },
-    Environment,
-    Result,
+    call::{utils::ReturnType, CallParams, CreateParams},
+    hash::{CryptoHash, HashOutput},
+    Environment, Result,
 };
 use ink_primitives::Key;
 

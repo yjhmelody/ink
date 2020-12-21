@@ -12,28 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    CacheCell,
-    EntryState,
-    StorageEntry,
-};
+use super::{CacheCell, EntryState, StorageEntry};
 use crate::traits::{
-    clear_packed_root,
-    pull_packed_root_opt,
-    ExtKeyPtr,
-    KeyPtr,
-    PackedLayout,
+    clear_packed_root, pull_packed_root_opt, ExtKeyPtr, KeyPtr, PackedLayout,
     SpreadLayout,
 };
-use core::{
-    fmt,
-    fmt::Debug,
-    ptr::NonNull,
-};
-use ink_prelude::{
-    boxed::Box,
-    collections::BTreeMap,
-};
+use core::{fmt, fmt::Debug, ptr::NonNull};
+use ink_prelude::{boxed::Box, collections::BTreeMap};
 use ink_primitives::Key;
 
 /// The index type used in the lazy storage chunk.
@@ -210,12 +195,7 @@ impl<V> LazyIndexMap<V> {
 #[cfg(feature = "std")]
 const _: () = {
     use crate::traits::StorageLayout;
-    use ink_metadata::layout::{
-        ArrayLayout,
-        CellLayout,
-        Layout,
-        LayoutKey,
-    };
+    use ink_metadata::layout::{ArrayLayout, CellLayout, Layout, LayoutKey};
     use scale_info::TypeInfo;
 
     impl<T> StorageLayout for LazyIndexMap<T>
@@ -422,7 +402,7 @@ where
     pub fn swap(&mut self, x: Index, y: Index) {
         if x == y {
             // Bail out early if both indices are the same.
-            return
+            return;
         }
         let (loaded_x, loaded_y) =
             // SAFETY: The loaded `x` and `y` entries are distinct from each
@@ -436,7 +416,7 @@ where
             ) };
         if loaded_x.value().is_none() && loaded_y.value().is_none() {
             // Bail out since nothing has to be swapped if both values are `None`.
-            return
+            return;
         }
         // Set the `mutate` flag since at this point at least one of the loaded
         // values is guaranteed to be `Some`.
@@ -449,17 +429,10 @@ where
 #[cfg(test)]
 mod tests {
     use super::{
-        super::{
-            EntryState,
-            StorageEntry,
-        },
-        Index,
-        LazyIndexMap,
+        super::{EntryState, StorageEntry},
+        Index, LazyIndexMap,
     };
-    use crate::traits::{
-        KeyPtr,
-        SpreadLayout,
-    };
+    use crate::traits::{KeyPtr, SpreadLayout};
     use ink_primitives::Key;
 
     /// Asserts that the cached entries of the given `imap` is equal to the `expected` slice.

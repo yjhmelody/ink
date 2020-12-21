@@ -16,28 +16,16 @@ use super::Box as StorageBox;
 use crate::{
     alloc,
     alloc::ContractPhase,
-    traits::{
-        KeyPtr,
-        SpreadLayout,
-    },
+    traits::{KeyPtr, SpreadLayout},
     Pack,
 };
 use core::{
     cmp::Ordering,
-    convert::{
-        AsMut,
-        AsRef,
-    },
-    ops::{
-        Deref,
-        DerefMut,
-    },
+    convert::{AsMut, AsRef},
+    ops::{Deref, DerefMut},
 };
 use ink_env::test::DefaultAccounts;
-use ink_prelude::borrow::{
-    Borrow,
-    BorrowMut,
-};
+use ink_prelude::borrow::{Borrow, BorrowMut};
 use ink_primitives::Key;
 
 fn run_test<F>(f: F)

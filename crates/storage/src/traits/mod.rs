@@ -33,38 +33,18 @@ mod spread;
 mod layout;
 
 #[cfg(feature = "std")]
-pub use self::layout::{
-    LayoutCryptoHasher,
-    StorageLayout,
-};
+pub use self::layout::{LayoutCryptoHasher, StorageLayout};
 pub(crate) use self::optspec::{
-    clear_spread_root_opt,
-    pull_packed_root_opt,
-    pull_spread_root_opt,
-    push_packed_root_opt,
-    push_spread_root_opt,
+    clear_spread_root_opt, pull_packed_root_opt, pull_spread_root_opt,
+    push_packed_root_opt, push_spread_root_opt,
 };
 pub use self::{
-    impls::{
-        forward_clear_packed,
-        forward_pull_packed,
-        forward_push_packed,
-    },
-    keyptr::{
-        ExtKeyPtr,
-        KeyPtr,
-    },
+    impls::{forward_clear_packed, forward_pull_packed, forward_push_packed},
+    keyptr::{ExtKeyPtr, KeyPtr},
     packed::PackedLayout,
-    spread::{
-        SpreadLayout,
-        FOOTPRINT_CLEANUP_THRESHOLD,
-    },
+    spread::{SpreadLayout, FOOTPRINT_CLEANUP_THRESHOLD},
 };
-pub use ::ink_storage_derive::{
-    PackedLayout,
-    SpreadLayout,
-    StorageLayout,
-};
+pub use ::ink_storage_derive::{PackedLayout, SpreadLayout, StorageLayout};
 use ink_primitives::Key;
 
 /// Pulls an instance of type `T` from the contract storage using spread layout.

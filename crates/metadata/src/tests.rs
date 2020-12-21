@@ -14,10 +14,7 @@
 
 use super::*;
 use pretty_assertions::assert_eq;
-use scale_info::{
-    IntoCompact,
-    Registry,
-};
+use scale_info::{IntoCompact, Registry};
 use serde_json::json;
 
 #[test]

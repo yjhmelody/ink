@@ -12,30 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{
-    Constructor,
-    DispatchError,
-    FnOutput,
-    FnState,
-    MessageMut,
-    MessageRef,
-};
-use core::{
-    any::TypeId,
-    mem::ManuallyDrop,
-};
-use ink_env::{
-    Environment,
-    ReturnFlags,
-};
+use crate::{Constructor, DispatchError, FnOutput, FnState, MessageMut, MessageRef};
+use core::{any::TypeId, mem::ManuallyDrop};
+use ink_env::{Environment, ReturnFlags};
 use ink_primitives::Key;
 use ink_storage::{
     alloc,
     alloc::ContractPhase,
-    traits::{
-        pull_spread_root,
-        push_spread_root,
-    },
+    traits::{pull_spread_root, push_spread_root},
 };
 
 /// Results of message handling operations.
@@ -144,7 +128,7 @@ where
     let transferred = ink_env::transferred_balance::<E>()
         .expect("encountered error while querying transferred balance");
     if transferred != <E as Environment>::Balance::from(0u32) {
-        return Err(DispatchError::PaidUnpayableMessage)
+        return Err(DispatchError::PaidUnpayableMessage);
     }
     Ok(())
 }

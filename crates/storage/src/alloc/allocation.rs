@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ink_env::hash::{
-    Blake2x256,
-    CryptoHash,
-    HashOutput,
-};
+use ink_env::hash::{Blake2x256, CryptoHash, HashOutput};
 use ink_primitives::Key;
 
 /// A unique dynamic allocation.

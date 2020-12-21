@@ -12,16 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::{
-    BinaryHeap,
-    PeekMut,
-    Reverse,
-};
-use crate::traits::{
-    KeyPtr,
-    PackedLayout,
-    SpreadLayout,
-};
+use super::{BinaryHeap, PeekMut, Reverse};
+use crate::traits::{KeyPtr, PackedLayout, SpreadLayout};
 use ink_primitives::Key;
 
 fn heap_from_slice<T>(slice: &[T]) -> BinaryHeap<T>

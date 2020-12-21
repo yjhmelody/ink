@@ -25,6 +25,9 @@ pub fn generate(attr: TokenStream2, input: TokenStream2) -> TokenStream2 {
 }
 
 pub fn generate_or_err(attr: TokenStream2, input: TokenStream2) -> Result<TokenStream2> {
+    // we get rust original ast here
+    // ir
     let contract = Contract::new(attr, input)?;
+    // codegen
     Ok(generate_code(&contract))
 }

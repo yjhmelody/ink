@@ -77,11 +77,7 @@ mod init;
 mod tests;
 
 use self::allocator::DynamicAllocator;
-pub use self::{
-    allocation::DynamicAllocation,
-    boxed::Box,
-    init::ContractPhase,
-};
+pub use self::{allocation::DynamicAllocation, boxed::Box, init::ContractPhase};
 
 /// Returns a new dynamic storage allocation.
 pub fn alloc() -> DynamicAllocation {

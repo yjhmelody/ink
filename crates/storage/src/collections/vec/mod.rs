@@ -24,15 +24,9 @@ mod storage;
 #[cfg(test)]
 mod tests;
 
-pub use self::iter::{
-    Iter,
-    IterMut,
-};
+pub use self::iter::{Iter, IterMut};
 use crate::{
-    lazy::{
-        Lazy,
-        LazyIndexMap,
-    },
+    lazy::{Lazy, LazyIndexMap},
     traits::PackedLayout,
 };
 
@@ -114,7 +108,7 @@ where
         if self.elems.key().is_none() {
             // We won't clear any storage if we are in lazy state since there
             // probably has not been any state written to storage, yet.
-            return
+            return;
         }
         for index in 0..self.len() {
             self.elems.clear_packed_at(index);
@@ -151,7 +145,7 @@ where
     /// Returns the index if it is within bounds or `None` otherwise.
     fn within_bounds(&self, index: u32) -> Option<u32> {
         if index < self.len() {
-            return Some(index)
+            return Some(index);
         }
         None
     }
@@ -159,7 +153,7 @@ where
     /// Returns a shared reference to the first element if any.
     pub fn first(&self) -> Option<&T> {
         if self.is_empty() {
-            return None
+            return None;
         }
         self.get(0)
     }
@@ -167,7 +161,7 @@ where
     /// Returns a shared reference to the last element if any.
     pub fn last(&self) -> Option<&T> {
         if self.is_empty() {
-            return None
+            return None;
         }
         let last_index = self.len() - 1;
         self.get(last_index)
@@ -207,7 +201,7 @@ where
     /// Returns `None` if the vector is empty.
     pub fn pop(&mut self) -> Option<T> {
         if self.is_empty() {
-            return None
+            return None;
         }
         let last_index = self.len() - 1;
         *self.len = last_index;
@@ -224,7 +218,7 @@ where
     /// since it avoids reading from contract storage in some use cases.
     pub fn pop_drop(&mut self) -> Option<()> {
         if self.is_empty() {
-            return None
+            return None;
         }
         let last_index = self.len() - 1;
         *self.len = last_index;
@@ -235,7 +229,7 @@ where
     /// Returns an exclusive reference to the first element if any.
     pub fn first_mut(&mut self) -> Option<&mut T> {
         if self.is_empty() {
-            return None
+            return None;
         }
         self.get_mut(0)
     }
@@ -243,7 +237,7 @@ where
     /// Returns an exclusive reference to the last element if any.
     pub fn last_mut(&mut self) -> Option<&mut T> {
         if self.is_empty() {
-            return None
+            return None;
         }
         let last_index = self.len() - 1;
         self.get_mut(last_index)
@@ -280,7 +274,7 @@ where
     /// This operation does not preserve ordering but is constant time.
     pub fn swap_remove(&mut self, n: u32) -> Option<T> {
         if self.is_empty() {
-            return None
+            return None;
         }
         self.elems.swap(n, self.len() - 1);
         self.pop()
@@ -298,7 +292,7 @@ where
     /// read for some use cases.
     pub fn swap_remove_drop(&mut self, n: u32) -> Option<()> {
         if self.is_empty() {
-            return None
+            return None;
         }
         self.elems.put(n, None);
         let last_index = self.len() - 1;
@@ -316,7 +310,7 @@ where
     #[inline]
     pub fn set(&mut self, index: u32, new_value: T) -> Result<(), IndexOutOfBounds> {
         if self.within_bounds(index).is_none() {
-            return Err(IndexOutOfBounds)
+            return Err(IndexOutOfBounds);
         }
         self.elems.put(index, Some(new_value));
         Ok(())
@@ -331,7 +325,7 @@ where
     /// any of the elements (whereas `pop()` does).
     pub fn clear(&mut self) {
         if self.is_empty() {
-            return
+            return;
         }
         for index in 0..self.len() {
             self.elems.put(index, None);

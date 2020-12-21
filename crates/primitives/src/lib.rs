@@ -26,7 +26,4 @@
 mod key;
 mod key_ptr;
 
-pub use self::{
-    key::Key,
-    key_ptr::KeyPtr,
-};
+pub use self::{key::Key, key_ptr::KeyPtr};
