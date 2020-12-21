@@ -33,8 +33,6 @@ impl AsRef<ir::Contract> for Contract<'_> {
 impl GenerateCode for Contract<'_> {
     /// Generates ink! contract code.
     fn generate_code(&self) -> TokenStream2 {
-        let original_module = self.contract.original_module();
-
         let module = self.contract.module();
         let ident = module.ident();
         let attrs = module.attrs();
@@ -55,9 +53,7 @@ impl GenerateCode for Contract<'_> {
             .filter_map(ir::Item::map_rust_item);
 
         quote! {
-            #original_module
-
-            #original pub mod test {}
+            #original
 
             #( #attrs )*
             #vis mod #ident {
