@@ -167,7 +167,6 @@ impl ItemImpls<'_> {
         let ident = constructor.ident();
         let inputs = constructor.inputs();
         let statements = constructor.statements();
-        dbg!(&ident);
         quote_spanned!(span =>
             #( #attrs )*
             #vis fn #ident( #( #inputs ),* ) -> Self {
@@ -193,7 +192,6 @@ impl ItemImpls<'_> {
         let output_arrow = message.output().map(|_| quote! { -> });
         let output = message.output();
         let statements = message.statements();
-        dbg!(&ident);
         quote_spanned!(span =>
             #( #attrs )*
             #vis fn #ident(#receiver, #( #inputs ),* ) #output_arrow #output {
@@ -218,7 +216,6 @@ impl ItemImpls<'_> {
             .filter_map(ir::ImplItem::filter_map_other_item)
             .map(ToTokens::to_token_stream);
         let self_type = item_impl.self_type();
-        dbg!(&self_type);
         quote_spanned!(span =>
             #( #attrs )*
             impl #self_type {

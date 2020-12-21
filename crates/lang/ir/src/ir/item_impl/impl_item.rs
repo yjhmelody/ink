@@ -92,7 +92,9 @@ impl TryFrom<syn::ImplItem> for ImplItem {
                     return Err(ink_attrs[1..]
                         .iter()
                         .map(into_err)
-                        .fold(into_err(&ink_attrs[0]), |fst, snd| fst.into_combine(snd)));
+                        .fold(into_err(&ink_attrs[0]), |fst, snd| {
+                            fst.into_combine(snd)
+                        }));
                 }
                 Ok(Self::Other(other_item))
             }

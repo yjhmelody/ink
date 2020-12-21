@@ -36,7 +36,7 @@ pub struct Config {
     /// contract.
     env_types: Option<Environment>,
 
-    original: Option<syn::LitStr>,
+    original: Option<syn::Path>,
 }
 
 /// Return an error to notify about duplicate ink! config arguments.
@@ -64,7 +64,7 @@ impl TryFrom<ast::AttributeArgs> for Config {
         let mut dynamic_storage_allocator: Option<(bool, ast::MetaNameValue)> = None;
         let mut as_dependency: Option<(bool, ast::MetaNameValue)> = None;
         let mut env_types: Option<(Environment, ast::MetaNameValue)> = None;
-        let mut original: Option<(syn::LitStr, ast::MetaNameValue)> = None;
+        let mut original: Option<(syn::Path, ast::MetaNameValue)> = None;
         for arg in args.into_iter() {
             if arg.name.is_ident("dynamic_storage_allocator") {
                 if let Some((_, ast)) = dynamic_storage_allocator {
@@ -111,7 +111,7 @@ impl TryFrom<ast::AttributeArgs> for Config {
                     return Err(duplicate_config_err(ast, arg, "original"));
                 }
 
-                if let ast::PathOrLit::Lit(syn::Lit::Str(original_name)) = &arg.value {
+                if let ast::PathOrLit::Path(original_name) = &arg.value {
                     original = Some((original_name.clone(), arg))
                 } else {
                     return Err(format_err_spanned!(
@@ -164,7 +164,7 @@ impl Config {
         self.as_dependency.unwrap_or(false)
     }
 
-    pub fn original_mod_name(&self) -> Option<syn::LitStr> {
+    pub fn original_mod_name(&self) -> Option<syn::Path> {
         self.original.clone()
     }
 }

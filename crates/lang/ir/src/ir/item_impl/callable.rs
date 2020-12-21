@@ -340,10 +340,6 @@ where
             }
         }
     };
-    dbg!(
-        "before hash: {}",
-        String::from_utf8(joined.clone()).unwrap()
-    );
     let hash = <blake2::Blake2b as blake2::Digest>::digest(&joined);
     ir::Selector::new([hash[0], hash[1], hash[2], hash[3]])
 }

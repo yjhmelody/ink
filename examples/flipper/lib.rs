@@ -18,7 +18,7 @@ use ink_lang as ink;
 
 // we keep original Flipper mod as `original_flipper` mod
 // Try to erase all ink's attrs.
-#[ink::contract]
+#[ink::contract(original = original_flipper)]
 pub mod flipper {
     // use std::fmt::Display;
 

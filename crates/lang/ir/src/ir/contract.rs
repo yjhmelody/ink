@@ -15,13 +15,12 @@
 use crate::{ast, ir};
 use core::convert::TryFrom;
 use proc_macro2::TokenStream as TokenStream2;
-use syn::spanned::Spanned;
 use quote::quote;
 use quote::ToTokens;
+use std::str::FromStr;
+use syn::spanned::Spanned;
 use syn::visit_mut::{self, VisitMut};
 use syn::ItemMod;
-use proc_macro2::Delimiter;
-use std::str::FromStr;
 
 /// An ink! contract definition consisting of the ink! configuration and module.
 ///
@@ -73,7 +72,7 @@ impl Contract {
         let config = syn::parse2::<ast::AttributeArgs>(ink_config)?;
         let module = syn::parse2::<syn::ItemMod>(ink_module.clone())?;
         let ink_config = ir::Config::try_from(config)?;
-        let original_module = Self::remove_ink_attrs(&ink_config,  ink_module.clone());
+        let original_module = Self::remove_ink_attrs(&ink_config, ink_module.clone());
         // let original_module= ink_module.clone();
         let original_item = syn::parse2::<syn::ItemMod>(original_module.clone())?;
         let ink_module = ir::ItemMod::try_from(module.clone())?;
@@ -85,8 +84,6 @@ impl Contract {
     }
 
     fn remove_ink_attrs(config: &ir::Config, ink_module: TokenStream2) -> TokenStream2 {
-
-
         #[derive(Default)]
         struct InkAttrEraser {
             mod_count: usize,
@@ -97,16 +94,15 @@ impl Contract {
             // rewrite module name when meet the first module
             fn visit_item_mod_mut(&mut self, module: &mut ItemMod) {
                 if self.mod_count == 0 {
-                    module.ident = syn::Ident::new("original", module.ident.span());
+                    module.ident =
+                        syn::Ident::new(self.original_name.as_str(), module.ident.span());
                 }
                 self.mod_count += 1;
-               visit_mut::visit_item_mod_mut(self, module);
+                visit_mut::visit_item_mod_mut(self, module);
             }
 
+            // remove all ink related attrs
             fn visit_attribute_mut(&mut self, attr: &mut syn::Attribute) {
-                if attr.path.is_ident("ink") {
-                    dbg!("doc", &attr);
-                }
                 if attr.path.is_ident("ink") {
                     let old_attr = attr.clone();
                     let path = attr.path.clone();
@@ -120,22 +116,24 @@ impl Contract {
                             "doc",
                             path.span(),
                         )));
-
-                    attr.tokens = TokenStream2::from_str("(inline)").expect("logic error");
-                    dbg!(&attr);
+                    attr.tokens =
+                        TokenStream2::from_str("(inline)").expect("logic error");
                 } else {
                     visit_mut::visit_attribute_mut(self, attr);
                 }
             }
-
-            // fn visit_attr_style_mut(&mut self, attr: &mut syn::AttrStyle) {
-            //     dbg!( &attr);
-            //
-            //     visit_mut::visit_attr_style_mut(self, attr);
-            // }
         }
         let mut tree = syn::parse2(ink_module).unwrap();
-        InkAttrEraser::default().visit_file_mut(&mut tree);
+        let mut eraser = InkAttrEraser::default();
+        eraser.original_name =
+            config
+                .original_mod_name()
+                .map_or("original".to_string(), |val| {
+                    val.get_ident()
+                        .expect("need a new legal module name for original code")
+                        .to_string()
+                });
+        eraser.visit_file_mut(&mut tree);
         tree.into_token_stream()
     }
 
