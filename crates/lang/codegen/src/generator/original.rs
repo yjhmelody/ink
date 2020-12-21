@@ -35,15 +35,7 @@ impl GenerateCode for Original<'_> {
         };
 
         impl VisitMut for InkAttrEraser {
-            // rewrite module name when meet the first module
-            fn visit_item_mod_mut(&mut self, module: &mut ItemMod) {
-                if self.mod_count == 0 {
-                    module.ident =
-                        syn::Ident::new(self.original_name.as_str(), module.ident.span());
-                }
-                self.mod_count += 1;
-                visit_mut::visit_item_mod_mut(self, module);
-            }
+            // TODO: erase `ink::trait_definition` or change its usage to `ink(trait_definition)`
 
             // remove all ink related attrs
             fn visit_attribute_mut(&mut self, attr: &mut syn::Attribute) {
@@ -63,10 +55,20 @@ impl GenerateCode for Original<'_> {
                             path.span(),
                         )));
                     attr.tokens =
-                        TokenStream2::from_str("(inline)").expect("logic error");
+                        TokenStream2::from_str("(inline)").expect("ink attr internal logic error");
                 } else {
                     visit_mut::visit_attribute_mut(self, attr);
                 }
+            }
+
+            // rewrite module name when meet the first module
+            fn visit_item_mod_mut(&mut self, module: &mut ItemMod) {
+                if self.mod_count == 0 {
+                    module.ident =
+                        syn::Ident::new(self.original_name.as_str(), module.ident.span());
+                }
+                self.mod_count += 1;
+                visit_mut::visit_item_mod_mut(self, module);
             }
         }
         let mut tree = syn::parse2(self.contract .ink_module()).unwrap();
